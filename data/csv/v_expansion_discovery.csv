@@ -1,0 +1,3 @@
+"signal_id","account_id","event_id","target_group_id","target_group_name","person_id","economic_buyer_id","observed_at","description","stage"
+"cc-email:discovery_request","AC0003","cc-email","copperline:platform-engineering","Platform Engineering","copperline:drew","copperline:rina","2026-11-18T17:27:00Z","Drew requested a two-template Endor Open Source evaluation and a separate setup-time baseline for Platform Engineering.","discovery_requested"
+"sc-meeting:discovery_request","AC0004","sc-meeting","stratos:fulfillment","Fulfillment","stratos:felix","","2026-11-19T20:30:00Z","Felix requested discovery for Endor Open Source container image scanning on three Fulfillment services.","discovery_requested"

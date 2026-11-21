@@ -1,0 +1,6 @@
+"seat_usage_key","contract_id","measured_on","lookback_days","active_contributing_developers","source_id"
+"astervale:primary-contract:2026-11-20","astervale:primary-contract","2026-11-20","90","110","product_telemetry"
+"brackenpay:primary-contract:2026-11-20","brackenpay:primary-contract","2026-11-20","90","86","product_telemetry"
+"copperline:primary-contract:2026-11-20","copperline:primary-contract","2026-11-20","90","166","product_telemetry"
+"ironvale:primary-contract:2026-11-20","ironvale:primary-contract","2026-11-20","90","68","product_telemetry"
+"stratos:primary-contract:2026-11-20","stratos:primary-contract","2026-11-20","90","108","product_telemetry"

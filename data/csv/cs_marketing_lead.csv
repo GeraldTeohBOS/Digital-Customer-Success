@@ -1,0 +1,3 @@
+"lead_id","account_id","buying_group_id","full_name","work_email","marketing_record_ref"
+"lead-cc-jo","AC0003","copperline:platform-engineering","Jo Mercer","jo.mercer@copperline.example","demo:marketing-contact-cc-104"
+"lead-sc-nia","AC0004","stratos:fulfillment","Nia Okafor","nia.okafor@fulfillment.stratoscommerce.example","demo:marketing-contact-sc-109"

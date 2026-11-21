@@ -1,0 +1,8 @@
+"workstream_id","account_id","use_case_id"
+"brackenpay:renewal","AC0001","brackenpay:payments-sca"
+"brackenpay:risk","AC0001","brackenpay:payments-sca"
+"brackenpay:rollout","AC0001","brackenpay:payments-sca"
+"astervale:rollout","AC0002","astervale:clinical-sca"
+"copperline:expansion","AC0003","copperline:platform-sca-pilot"
+"stratos:expansion","AC0004","stratos:fulfillment-container-pilot"
+"ironvale:first_value","AC0005","ironvale:routing-sast"

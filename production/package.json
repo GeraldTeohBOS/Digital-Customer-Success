@@ -1,0 +1,23 @@
+{
+  "name": "endor-cs-production-pilot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=24"},
+  "scripts": {
+    "start": "node server.mjs",
+    "demo": "node demo.mjs",
+    "migrate": "node migrate.mjs",
+    "grant:account": "node grant-account.mjs",
+    "sync:salesforce": "node salesforce-sync.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "jose": "^6.2.3",
+    "openid-client": "^6.8.1",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.0"
+  }
+}

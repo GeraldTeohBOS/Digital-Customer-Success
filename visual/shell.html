@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Trace fictional customer success decisions to the buying groups, evidence, and canonical data behind them.">
+<meta name="color-scheme" content="dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; connect-src 'self'; base-uri 'none'">
+<title>Digital Customer Success · Knowledge Graph</title>
+<style><!-- STYLE --></style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <svg width="35" height="35" viewBox="0 0 36 36" aria-hidden="true"><rect x="1" y="1" width="34" height="34" rx="9" fill="#242b34" stroke="#515d6b"/><path d="m10 24 8-12 8 12m-16 0h16" fill="none" stroke="#95edcb" stroke-width="1.5"/><circle cx="18" cy="12" r="2.5" fill="#baffdf"/><circle cx="10" cy="24" r="2.5" fill="#baffdf"/><circle cx="26" cy="24" r="2.5" fill="#baffdf"/></svg>
+      <div><strong>Digital Customer Success</strong><span>Endor Labs concept</span></div>
+    </div>
+    <div class="stamp"><span class="stamp-dot"></span><span id="snapshot"></span></div>
+  </header>
+  <main>
+    <header class="intro">
+      <h1>Knowledge graph</h1>
+      <p>Explore the relationships and source evidence behind CSM decisions.</p>
+    </header>
+    <nav class="tabs" aria-label="Explore the system">
+      <button type="button" data-view="graph" aria-pressed="true">Account graph</button>
+      <button type="button" data-view="outreach" aria-pressed="false">Outreach</button>
+      <button type="button" data-view="timeline" aria-pressed="false">Timeline</button>
+      <button type="button" data-view="flow" aria-pressed="false">Data lineage</button>
+      <button type="button" data-view="datasets" aria-pressed="false">Canonical datasets</button>
+    </nav>
+    <section id="view" aria-label="Selected view"></section>
+  </main>
+  <footer class="foot"><span>Fictional accounts and source records</span><span id="version"></span></footer>
+</div>
+<script type="application/json" id="snapshot-data"><!-- DATA --></script>
+<script><!-- SCRIPT --></script>
+</body>
+</html>

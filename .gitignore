@@ -1,0 +1,6 @@
+dist/
+site.tar.gz
+production/node_modules/
+.env
+.env.*
+!.env.example

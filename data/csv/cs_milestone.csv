@@ -1,0 +1,4 @@
+"workstream_id","account_id","job_kind","deployment_id","rollout_scope","success_criterion","target_on","achieved_on","outcome_event_id"
+"astervale:rollout","AC0002","rollout","astervale:primary-deployment","15 Clinical Integrations repositories","Name the first three repository owners to unblock the batch and route reachable dependency findings.","2026-11-23","",""
+"brackenpay:rollout","AC0001","rollout","brackenpay:primary-deployment","Next 10 Payments API repositories","Verify approval of the Endor Labs GitHub App before committing the next ten repositories to dependency scanning.","2026-11-24","",""
+"ironvale:first_value","AC0005","first_value","ironvale:primary-deployment","Five newly added Routing repositories","Verify a first successful AI SAST scan in each repository and confirm where owners review first-party code findings.","2026-12-01","",""

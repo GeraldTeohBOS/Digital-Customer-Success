@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "endor-digital-cs": {
+      "command": "node",
+      "args": ["/absolute/path/to/Endor_CS_MCP_Kit/src/server.mjs"]
+    }
+  }
+}

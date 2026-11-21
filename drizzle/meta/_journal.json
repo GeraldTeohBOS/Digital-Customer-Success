@@ -1,0 +1,55 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1795132800000,
+      "tag": "0000_canonical",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1795132800001,
+      "tag": "0001_account_metrics",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1795132800002,
+      "tag": "0002_customer_actions",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1795132800003,
+      "tag": "0003_customer_lifecycle",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1795132800004,
+      "tag": "0004_product_grounding",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1795132800005,
+      "tag": "0005_expansion_research",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1795132800006,
+      "tag": "0006_outreach",
+      "breakpoints": true
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+"action_id","account_id","workstream_id","owner_id","customer_contact_id","title","due_on","parent_action_id","created_at"
+"brackenpay:rollout/initial","AC0001","brackenpay:rollout","staff:morgan","brackenpay:theo","Confirm GitHub App permission approval with Theo","2026-11-24","","2026-11-20T20:00:00Z"
+"brackenpay:risk/initial","AC0001","brackenpay:risk","staff:morgan","","Review the approval outcome and escalate internally if it slipped","2026-11-25","","2026-11-20T20:00:00Z"
+"brackenpay:renewal/initial","AC0001","brackenpay:renewal","staff:morgan","brackenpay:priya","Prepare the scoped value review and confirm Priya’s success criteria","2026-12-04","","2026-11-20T20:00:00Z"
+"astervale:rollout/initial","AC0002","astervale:rollout","staff:morgan","astervale:jordan","Confirm the first three repository owners with Jordan","2026-11-23","","2026-11-20T20:00:00Z"
+"copperline:expansion/initial","AC0003","copperline:expansion","staff:morgan","copperline:drew","Agree on the pilot baseline and decision criteria with Drew","2026-11-25","","2026-11-20T20:00:00Z"
+"stratos:expansion/initial","AC0004","stratos:expansion","staff:morgan","stratos:felix","Map the three repositories and ask Felix who owns funding","2026-11-30","","2026-11-20T20:00:00Z"
+"ironvale:first_value/initial","AC0005","ironvale:first_value","staff:morgan","ironvale:sofia","Verify the first successful scans for Sofia’s five repositories","2026-12-01","","2026-11-20T20:00:00Z"

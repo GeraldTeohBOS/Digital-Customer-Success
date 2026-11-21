@@ -1,0 +1,6 @@
+"account_id","assessed_on","health_status","churn_risk","rationale","source_id"
+"AC0001","2026-11-20","At risk","High","A GitHub App permissions review is blocking rollout to the remaining Payments repositories.","cs_review"
+"AC0002","2026-11-20","Watch","Medium","The core team is seeing value. Rollout across Clinical Integrations is waiting on named repository owners.","cs_review"
+"AC0003","2026-11-20","Healthy","Low","Product Security's contracted deployment is above target. Platform Engineering requested a separate evaluation.","cs_review"
+"AC0004","2026-11-20","Healthy","Low","The Storefront deployment is above target. Fulfillment has asked for a scoping session.","cs_review"
+"AC0005","2026-11-20","Healthy","Low","Endor Code AI SAST coverage is progressing toward 85%. Routing has owners and a December 1 checkpoint for five new repositories.","cs_review"

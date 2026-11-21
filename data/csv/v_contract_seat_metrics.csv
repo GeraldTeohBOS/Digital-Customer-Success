@@ -1,0 +1,6 @@
+"account_id","contract_id","buying_group_id","product","seat_unit","licensed_seat_count","active_contributors_90d","seat_utilization_pct","seat_usage_key","measured_on","lookback_days","entitlement_source_id","usage_source_id"
+"AC0001","brackenpay:primary-contract","brackenpay:payments-security","Endor Open Source","contributing_developer","150","86","57.33","brackenpay:primary-contract:2026-11-20","2026-11-20","90","salesforce","product_telemetry"
+"AC0002","astervale:primary-contract","astervale:clinical-appsec","Endor Open Source","contributing_developer","200","110","55","astervale:primary-contract:2026-11-20","2026-11-20","90","salesforce","product_telemetry"
+"AC0003","copperline:primary-contract","copperline:product-security","Endor Open Source","contributing_developer","200","166","83","copperline:primary-contract:2026-11-20","2026-11-20","90","salesforce","product_telemetry"
+"AC0004","stratos:primary-contract","stratos:storefront","Endor Open Source","contributing_developer","120","108","90","stratos:primary-contract:2026-11-20","2026-11-20","90","salesforce","product_telemetry"
+"AC0005","ironvale:primary-contract","ironvale:routing","Endor Code","contributing_developer","100","68","68","ironvale:primary-contract:2026-11-20","2026-11-20","90","salesforce","product_telemetry"

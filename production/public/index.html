@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Digital Customer Success</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+  <script src="/outreach.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><div><strong>Digital Customer Success</strong><span>CS pilot</span></div></div>
+      <form method="post" action="/logout"><button class="action" type="submit">Sign out</button></form>
+    </header>
+    <main>
+      <header class="intro">
+        <h1>Account activity</h1>
+        <p>Review current Salesforce contacts and changes for your assigned accounts.</p>
+      </header>
+      <div class="controls pilot-controls">
+        <label class="field">Account <select id="account-select" disabled></select></label>
+        <button class="action" type="button" id="refresh">Refresh</button>
+        <span id="freshness" class="stamp" title="Most recent completed Salesforce sync">Loading Salesforce data…</span>
+      </div>
+      <p id="notice" class="workflow-error" role="status" hidden></p>
+      <div id="account-view" hidden>
+        <div class="workspace pilot-graph">
+          <section class="panel pilot-map" aria-label="Account and contact graph">
+            <div class="map">
+              <svg class="map-svg" aria-hidden="true"><path id="contact-path"></path></svg>
+              <div class="map-lanes">
+                <section class="map-lane"><h2 class="lane-title">Account</h2><div id="account-node" class="lane-items"></div></section>
+                <section class="map-lane"><h2 class="lane-title">Contacts</h2><div id="contact-nodes" class="lane-items"></div></section>
+              </div>
+            </div>
+          </section>
+          <aside id="graph-detail" class="panel details" tabindex="0" aria-label="Selected account or contact"></aside>
+        </div>
+        <section id="gong-outreach" class="panel outreach-shell pilot-outreach" aria-label="Gong outreach" hidden>
+          <header class="workflow-heading"><div><h2>Gong outreach</h2><p>Review a draft for a manual Gong email task.</p></div>
+            <span class="status-chip" id="gong-mode"></span></header>
+          <div id="gong-editor"></div>
+          <p id="gong-notice" class="workflow-notice" role="status" tabindex="-1"></p>
+          <p id="gong-error" class="workflow-error" role="alert" hidden></p>
+        </section>
+        <div class="timeline-layout pilot-timeline">
+          <section class="panel timeline-list"><h2>Timeline</h2><div class="timeline-rows" id="events"></div></section>
+          <section class="panel timeline-detail" id="event-detail" aria-label="Timeline record"></section>
+        </div>
+      </div>
+    </main>
+    <footer class="foot"><span>Remote MCP <code id="mcp-url"></code></span><span>MCP reads · Console approvals</span></footer>
+  </div>
+</body>
+</html>

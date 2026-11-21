@@ -1,0 +1,4 @@
+"capability_id","product_line_id","capability_name","problem_addressed","official_url"
+"ai_sast","endor_code","AI SAST","Developers need actionable first-party code findings with enough context to triage and remediate them in their development workflow.","https://www.endorlabs.com/use-case/ai-sast"
+"container_reachability","endor_open_source","Container image scanning and reachability","Container images contain many packages. Image scanning and reachability help AppSec teams prioritize fixes based on what their applications use.","https://www.endorlabs.com/learn/container-security-reachability"
+"reachable_sca","endor_open_source","Reachability-based SCA","Dependency scanners can create more alerts than developers can act on. Reachability gives application context for which findings to review and fix first.","https://www.endorlabs.com/use-cases"

@@ -1,0 +1,165 @@
+{
+  "mode": "simulated",
+  "targets": [
+    {
+      "accountId": "AC0003",
+      "buyingGroupId": "copperline:platform-engineering",
+      "useCaseId": "copperline:platform-sca-pilot",
+      "entityName": "Copperline Cloud",
+      "entityDomain": "copperline.example",
+      "relationship": "business_unit",
+      "incumbentGroupId": "copperline:product-security",
+      "introductionOwnerId": "copperline:drew",
+      "introductionEventId": "cc-email",
+      "discussion": "map the two shared CI templates, agree on a setup-time baseline, and decide what usable dependency and reachability results would look like",
+      "contractQuestion": "Confirm whether the existing Endor Open Source agreement covers Platform Engineering’s repositories and contributors before proposing commercial terms."
+    },
+    {
+      "accountId": "AC0004",
+      "buyingGroupId": "stratos:fulfillment",
+      "useCaseId": "stratos:fulfillment-container-pilot",
+      "entityName": "Stratos Fulfillment Services LLC",
+      "entityDomain": "fulfillment.stratoscommerce.example",
+      "relationship": "subsidiary",
+      "incumbentGroupId": "stratos:storefront",
+      "introductionOwnerId": "stratos:felix",
+      "introductionEventId": "sc-meeting",
+      "discussion": "pick the three service images, identify their build owners, and baseline the weekly time spent triaging image findings",
+      "contractQuestion": "Verify the subsidiary’s legal entity, affiliate-use rights, registry boundaries, and who controls budget. The Storefront agreement identifies the incumbent scope."
+    }
+  ],
+  "sumbleSignals": [
+    {
+      "id": "sumble-cc-ci-hire", "group": "copperline:platform-engineering", "kind": "job_post", "at": "2026-11-19T15:00:00Z",
+      "title": "Staff Developer Experience Engineer for shared CI workflows",
+      "excerpt": "Own reusable GitHub Actions workflows for Java and Go services. Work with Platform Security to standardize dependency checks and give application teams a supported onboarding path.",
+      "technologies": ["GitHub Actions", "Java", "Maven", "Go"],
+      "hypothesis": "Platform Engineering’s CI maintainers and security policy reviewers are plausible participants in Drew’s two-template evaluation.",
+      "url": "https://careers.copperline.example/jobs/developer-experience-staff"
+    },
+    {
+      "id": "sumble-cc-ci-stack", "group": "copperline:platform-engineering", "kind": "technology", "at": "2026-11-15T15:00:00Z",
+      "title": "Platform Engineering’s published workflow stack",
+      "excerpt": "The engineering handbook names reusable GitHub Actions workflows for Java services using Maven and a separate Go service template.",
+      "technologies": ["GitHub Actions", "Maven", "Go"],
+      "hypothesis": "Ask whether the Java and Go templates are the exact ones Drew wants to evaluate.",
+      "url": "https://engineering.copperline.example/handbook/shared-builds"
+    },
+    {
+      "id": "sumble-cc-ci-project", "group": "copperline:platform-engineering", "kind": "initiative", "at": "2026-11-18T15:00:00Z",
+      "title": "Developer Productivity consolidates common CI checks",
+      "excerpt": "Platform Engineering is consolidating service bootstrap workflows and will publish a migration playbook for engineering teams.",
+      "technologies": ["GitHub Actions"],
+      "hypothesis": "Standardizing how dependency results reach application owners may support the wider CI initiative.",
+      "url": "https://engineering.copperline.example/notes/ci-standardization"
+    },
+    {
+      "id": "sumble-sc-affiliate", "group": "stratos:fulfillment", "kind": "subsidiary_relationship", "at": "2026-11-15T15:00:00Z",
+      "title": "Stratos Fulfillment Services subsidiary listing",
+      "excerpt": "The company directory lists Stratos Fulfillment Services LLC as a subsidiary of Stratos Commerce with its own Engineering and Platform teams.",
+      "technologies": [],
+      "hypothesis": "Scope people research to the subsidiary and validate contract coverage with the account team.",
+      "url": "https://stratoscommerce.example/company/fulfillment-services"
+    },
+    {
+      "id": "sumble-sc-image-hire", "group": "stratos:fulfillment", "kind": "job_post", "at": "2026-11-18T15:00:00Z",
+      "title": "Senior Platform SRE for Fulfillment service images",
+      "excerpt": "Maintain Docker image build workflows in GitHub Actions, publish service images to Amazon ECR, and improve how engineers triage container findings.",
+      "technologies": ["Docker", "GitHub Actions", "Amazon ECR"],
+      "hypothesis": "Include the engineers who own image publishing and first-line triage in the evaluation.",
+      "url": "https://fulfillment.stratoscommerce.example/careers/platform-sre"
+    },
+    {
+      "id": "sumble-sc-image-stack", "group": "stratos:fulfillment", "kind": "technology", "at": "2026-11-16T15:00:00Z",
+      "title": "Fulfillment publishes service images to Amazon ECR",
+      "excerpt": "The Fulfillment build handbook describes GitHub Actions builds publishing versioned Docker images to a Fulfillment-managed Amazon ECR registry.",
+      "technologies": ["Docker", "Amazon ECR", "GitHub Actions"],
+      "hypothesis": "Ask which build workflows and registry permissions cover Felix’s proposed services.",
+      "url": "https://fulfillment.stratoscommerce.example/engineering/image-publishing"
+    },
+    {
+      "id": "sumble-sc-image-project", "group": "stratos:fulfillment", "kind": "initiative", "at": "2026-11-19T15:00:00Z",
+      "title": "Fulfillment standardizes container image checks",
+      "excerpt": "Fulfillment Engineering is consolidating checks in its image pipeline and wants clearer escalation for package findings before release.",
+      "technologies": ["Docker"],
+      "hypothesis": "Use Felix’s first-party discovery request to test whether container reachability could reduce team triage time.",
+      "url": "https://fulfillment.stratoscommerce.example/engineering/standardize-image-checks"
+    }
+  ],
+  "clayPeople": [
+    {
+      "id": "clay-cc-jo", "group": "copperline:platform-engineering", "name": "Jo Mercer", "title": "Staff Developer Experience Engineer",
+      "team": "Platform Engineering", "domain": "copperline.example", "email": "jo.mercer@copperline.example",
+      "persona": "implementation_owner", "basis": "Profile lists maintenance of Java and Go reusable GitHub Actions workflows and onboarding application teams.",
+      "signal": "sumble-cc-ci-hire", "at": "2026-11-19T17:00:00Z", "profile": "https://careers.copperline.example/people/jo-mercer"
+    },
+    {
+      "id": "clay-cc-alma", "group": "copperline:platform-engineering", "name": "Alma Voss", "title": "Principal Platform Security Architect",
+      "team": "Platform Engineering", "domain": "copperline.example", "email": "alma.voss@copperline.example",
+      "persona": "security_reviewer", "basis": "Profile lists ownership of CI policy reviews and engineering exception workflows for shared builds.",
+      "signal": "sumble-cc-ci-project", "at": "2026-11-18T17:00:00Z", "profile": "https://careers.copperline.example/people/alma-voss"
+    },
+    {
+      "id": "clay-cc-drew", "group": "copperline:platform-engineering", "name": "Drew Ito", "title": "Director, Developer Productivity",
+      "team": "Platform Engineering", "domain": "copperline.example", "email": "drew@copperline.example",
+      "persona": "technical_evaluator", "basis": "The listed remit covers Developer Productivity and shared workflows.",
+      "signal": "sumble-cc-ci-stack", "at": "2026-11-18T17:00:00Z", "profile": "https://careers.copperline.example/people/drew-ito"
+    },
+    {
+      "id": "clay-cc-lina-conflict", "group": "copperline:platform-engineering", "name": "Lina Morales", "title": "Director, Product Security",
+      "team": "Platform Engineering", "domain": "copperline.example", "email": "lina@copperline.example",
+      "persona": "security_reviewer", "basis": "A simulated team classification associates a shared CI governance remit with Platform. The CRM lists Product Security.",
+      "signal": "sumble-cc-ci-project", "at": "2026-11-18T17:00:00Z", "profile": "https://careers.copperline.example/people/lina-morales"
+    },
+    {
+      "id": "clay-sc-nia", "group": "stratos:fulfillment", "name": "Nia Okafor", "title": "Staff Platform Engineer, Fulfillment Services",
+      "team": "Fulfillment", "domain": "fulfillment.stratoscommerce.example", "email": "nia.okafor@fulfillment.stratoscommerce.example",
+      "persona": "technical_evaluator", "basis": "Profile lists responsibility for service image publishing, Amazon ECR access and build-template changes.",
+      "signal": "sumble-sc-image-stack", "at": "2026-11-19T17:00:00Z", "profile": "https://fulfillment.stratoscommerce.example/engineering/people/nia-okafor"
+    },
+    {
+      "id": "clay-sc-selene", "group": "stratos:fulfillment", "name": "Selene Park", "title": "VP, Fulfillment Engineering",
+      "team": "Fulfillment", "domain": "fulfillment.stratoscommerce.example", "email": "selene.park@fulfillment.stratoscommerce.example",
+      "persona": "potential_sponsor", "basis": "Profile indicates a Fulfillment-wide engineering remit that could include sponsoring the pilot. Purchasing authority is unknown.",
+      "signal": "sumble-sc-image-project", "at": "2026-11-18T17:00:00Z", "profile": "https://fulfillment.stratoscommerce.example/engineering/people/selene-park"
+    },
+    {
+      "id": "clay-sc-robin-review", "group": "stratos:fulfillment", "name": "Robin Tsai", "title": "Senior Site Reliability Engineer",
+      "team": "Fulfillment", "domain": "fulfillment.stratoscommerce.example", "email": null,
+      "persona": "implementation_owner", "basis": "A partial profile mentions Docker and ECR. The work email cannot be resolved in the mock waterfall.",
+      "signal": "sumble-sc-image-hire", "at": "2026-11-19T17:00:00Z", "profile": "https://fulfillment.stratoscommerce.example/engineering/people/robin-tsai"
+    }
+  ],
+  "marketingLeads": [
+    {"id": "lead-cc-jo", "group": "copperline:platform-engineering", "name": "Jo Mercer", "email": "jo.mercer@copperline.example", "sourceRef": "demo:marketing-contact-cc-104"},
+    {"id": "lead-sc-nia", "group": "stratos:fulfillment", "name": "Nia Okafor", "email": "nia.okafor@fulfillment.stratoscommerce.example", "sourceRef": "demo:marketing-contact-sc-109"}
+  ],
+  "marketingEvents": [
+    {
+      "id": "cc-jo-webinar", "lead": "lead-cc-jo", "at": "2026-11-05T18:00:00Z", "kind": "webinar", "status": "Attended",
+      "title": "Dependency reachability in reusable GitHub Actions workflows",
+      "summary": "Jo attended a session on dependency reachability in reusable workflows and asked about using one workflow for Java and Go services.",
+      "body": "The webinar covered rolling out Endor Open Source dependency scanning and sharing reachability results across repositories that reuse one CI workflow.",
+      "attendeeQuestion": "Can we use one shared workflow for Java and Go services and still give each team its own dependency findings?"
+    },
+    {
+      "id": "cc-jo-download", "lead": "lead-cc-jo", "at": "2026-11-10T16:20:00Z", "kind": "download", "status": "Downloaded",
+      "title": "Dependency scanning setup checklist for shared CI",
+      "summary": "Jo downloaded a fictional Endor Open Source checklist for onboarding shared CI templates.",
+      "body": "The checklist covers choosing template owners, validating a successful dependency scan, and checking how reachability results reach service owners."
+    },
+    {
+      "id": "sc-nia-webinar", "lead": "lead-sc-nia", "at": "2026-11-17T16:10:00Z", "kind": "webinar", "status": "Registered",
+      "title": "Prioritizing container image findings with reachability",
+      "summary": "Nia registered for a December 3 Endor Open Source container image scanning webinar.",
+      "body": "This fictional upcoming event covers prioritizing package findings in service images and planning a scoped trial. The marketing record confirms registration.",
+      "scheduledAt": "2026-12-03T17:00:00Z"
+    },
+    {
+      "id": "sc-nia-download", "lead": "lead-sc-nia", "at": "2026-11-13T16:05:00Z", "kind": "download", "status": "Downloaded",
+      "title": "Container image scanning and triage pilot worksheet",
+      "summary": "Nia downloaded a fictional pilot worksheet for Endor Open Source container image scanning.",
+      "body": "The worksheet captures where pilot images are built, their owners, and baseline weekly triage time for the planned service cohort."
+    }
+  ]
+}

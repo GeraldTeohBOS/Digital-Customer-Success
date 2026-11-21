@@ -1,0 +1,1445 @@
+{
+  "snapshotDate": "2026-11-20",
+  "owner": {
+    "name": "Morgan Rivera",
+    "title": "Customer Success Manager",
+    "email": "morgan@endor-demo.example"
+  },
+  "trendDates": [
+    "2026-10-23",
+    "2026-10-30",
+    "2026-11-06",
+    "2026-11-13",
+    "2026-11-20"
+  ],
+  "accounts": [
+    {
+      "id": "brackenpay",
+      "initials": "BP",
+      "color": "violet",
+      "name": "BrackenPay",
+      "industry": "Fintech",
+      "segment": "Enterprise",
+      "product": "Endor Open Source",
+      "useCase": "Prioritize reachable dependency findings in Payments. Organization-approved GitHub App, phased repository onboarding and reachability-based dependency triage.",
+      "renewal": "2027-02-15",
+      "health": "At risk",
+      "risk": "High",
+      "scoped": 100,
+      "target": 75,
+      "scans": [
+        36,
+        37,
+        36,
+        34,
+        34
+      ],
+      "healthReason": "A GitHub App permissions review is blocking rollout to the remaining Payments repositories.",
+      "value": {
+        "label": "Median time to remediate",
+        "before": "12 days",
+        "after": "8 days",
+        "scope": "Resolved dependency findings in actively scanned Payments repositories, prior 30 days vs. latest 30 days.",
+        "eventId": "bp-usage"
+      },
+      "contacts": [
+        {
+          "id": "maya",
+          "name": "Maya Chen",
+          "title": "Security Engineering Lead",
+          "role": "Champion",
+          "team": "AppSec",
+          "scope": "Current deployment",
+          "email": "maya@brackenpay.example"
+        },
+        {
+          "id": "theo",
+          "name": "Theo Marshall",
+          "title": "Director, Platform Engineering",
+          "role": "Technical owner",
+          "team": "Payments Platform",
+          "scope": "Current deployment",
+          "email": "theo@brackenpay.example"
+        },
+        {
+          "id": "priya",
+          "name": "Priya Nair",
+          "title": "VP of Security",
+          "role": "Executive sponsor",
+          "team": "Security",
+          "scope": "Account oversight",
+          "email": "priya@brackenpay.example"
+        }
+      ],
+      "events": [
+        {
+          "id": "bp-email",
+          "type": "email",
+          "at": "2026-11-19T15:42:00Z",
+          "title": "Payments SCA rollout · GitHub App approval",
+          "summary": "Theo owns the GitHub App approval for the next Payments dependency-scanning batch and will review it on November 24.",
+          "contactIds": [
+            "maya",
+            "theo"
+          ],
+          "messages": [
+            {
+              "from": "morgan",
+              "to": [
+                "maya",
+                "theo"
+              ],
+              "at": "2026-11-18T15:00:00Z",
+              "body": "Hi Maya and Theo, Endor Open Source scanned 34 of our 100 agreed Payments repositories in the past 30 days. What approval is still open before we run dependency scans for the next batch?"
+            },
+            {
+              "from": "maya",
+              "to": [
+                "morgan",
+                "theo"
+              ],
+              "at": "2026-11-19T13:10:00Z",
+              "body": "AppSec finished its review. Platform still needs to approve the Endor Labs GitHub App for the organization. Once that's in place, we can start the next ten Payments API repositories and check that reachability results are available."
+            },
+            {
+              "from": "theo",
+              "to": [
+                "maya",
+                "morgan"
+              ],
+              "at": "2026-11-19T15:42:00Z",
+              "body": "I own the Platform approval for the Endor Labs GitHub App. I'll bring it to our November 24 change review. Hold the ten-repository SCA batch until I confirm the decision."
+            }
+          ],
+          "observations": [
+            {
+              "useCaseId": "payments-sca",
+              "kind": "rollout_review",
+              "evidenceRole": "csm_context",
+              "observedText": "Morgan asked which approval is still required to expand Payments dependency scanning.",
+              "sourcePart": "email_message",
+              "message": 1
+            },
+            {
+              "useCaseId": "payments-sca",
+              "kind": "implementation_context",
+              "evidenceRole": "customer_statement",
+              "observedText": "Maya said AppSec review was complete and organization approval was outstanding for the ten-repository SCA batch.",
+              "sourcePart": "email_message",
+              "message": 2
+            },
+            {
+              "useCaseId": "payments-sca",
+              "kind": "rollout_blocker",
+              "evidenceRole": "qualifying_evidence",
+              "observedText": "Theo owns Endor Labs GitHub App approval. The next ten Payments SCA repositories are on hold pending his November 24 review.",
+              "sourcePart": "email_message",
+              "message": 3
+            }
+          ]
+        },
+        {
+          "id": "bp-usage",
+          "type": "product",
+          "at": "2026-11-18T16:00:00Z",
+          "title": "Payments dependency-scan coverage stays at 34%",
+          "summary": "34 of 100 in-scope Payments repositories had a successful Endor Open Source dependency scan in the rolling 30-day window.",
+          "contactIds": [],
+          "fields": [
+            [
+              "Repositories with a successful SCA scan",
+              "34 of 100"
+            ],
+            [
+              "Agreed rollout target",
+              "75%"
+            ],
+            [
+              "Median dependency remediation time",
+              "12 days to 8 days"
+            ]
+          ],
+          "body": "The same 34 repositories were active at the prior weekly check. Median days to resolve dependency findings in that scanned scope moved from 12 in the prior 30 days to 8 in the latest 30 days.",
+          "observations": [
+            {
+              "useCaseId": "payments-sca",
+              "kind": "telemetry_report",
+              "evidenceRole": "operational_evidence",
+              "observedText": "The Payments scan report shows 34 of 100 repositories active, flat from the previous weekly check, and a measured 12-to-8-day median on resolved dependency findings.",
+              "sourcePart": "body"
+            }
+          ]
+        },
+        {
+          "id": "bp-content",
+          "type": "download",
+          "at": "2026-11-13T14:25:00Z",
+          "title": "GitHub App checklist for dependency scanning",
+          "summary": "Theo downloaded a fictional Endor Open Source onboarding checklist.",
+          "contactIds": [
+            "theo"
+          ],
+          "fields": [
+            [
+              "Asset",
+              "GitHub App checklist for dependency scanning"
+            ],
+            [
+              "Format",
+              "Implementation checklist"
+            ],
+            [
+              "Campaign",
+              "Endor Open Source onboarding"
+            ]
+          ],
+          "body": "The checklist covers organization approval, repository owners, phased onboarding and confirming a first successful dependency scan.",
+          "observations": [
+            {
+              "useCaseId": "payments-sca",
+              "kind": "enablement_engagement",
+              "evidenceRole": "passive_engagement",
+              "observedText": "Theo downloaded the Endor Open Source onboarding checklist.",
+              "sourcePart": "summary"
+            }
+          ]
+        },
+        {
+          "id": "bp-webinar",
+          "type": "webinar",
+          "at": "2026-11-10T16:10:00Z",
+          "title": "Payments dependency scanning office hours",
+          "summary": "Maya registered for an Endor Open Source rollout clinic.",
+          "contactIds": [
+            "maya"
+          ],
+          "fields": [
+            [
+              "Session",
+              "Payments dependency scanning office hours"
+            ],
+            [
+              "Scheduled",
+              "Nov 25, 2026 at 17:00 UTC"
+            ],
+            [
+              "Status",
+              "Registered"
+            ],
+            [
+              "Host",
+              "Customer Enablement"
+            ]
+          ],
+          "body": "The session covers repository owner mapping, initial dependency scans and how to review reachability results from the pilot batch.",
+          "observations": [
+            {
+              "useCaseId": "payments-sca",
+              "kind": "enablement_engagement",
+              "evidenceRole": "passive_engagement",
+              "observedText": "Maya registered for a dependency-scanning rollout clinic.",
+              "sourcePart": "summary"
+            }
+          ]
+        },
+        {
+          "id": "bp-meeting",
+          "type": "meeting",
+          "at": "2026-11-05T18:00:00Z",
+          "title": "Payments dependency scanning success-plan review",
+          "summary": "Priya and Maya agreed to a 75% repository-coverage milestone for Endor Open Source.",
+          "contactIds": [
+            "maya",
+            "priya"
+          ],
+          "fields": [
+            [
+              "Meeting",
+              "Payments dependency scanning success-plan review"
+            ],
+            [
+              "Agreed SCA coverage target",
+              "75 of 100 Payments repositories"
+            ]
+          ],
+          "body": "Priya and Maya agreed to scan 75 of 100 Payments repositories. Priya asked for a check-in on the Endor Labs GitHub App approval and wants the team to bring scoped dependency remediation times to the next review.",
+          "observations": [
+            {
+              "useCaseId": "payments-sca",
+              "kind": "customer_commitment",
+              "evidenceRole": "customer_statement",
+              "observedText": "Priya and Maya agreed to 75 of 100 repositories and a scoped dependency remediation review.",
+              "sourcePart": "body"
+            }
+          ]
+        }
+      ],
+      "productUseCases": [
+        {
+          "id": "payments-sca",
+          "buyingGroupId": "payments-security",
+          "capabilityId": "reachable_sca",
+          "stage": "deployed",
+          "label": "Prioritize reachable dependency findings in Payments",
+          "customerProblem": "Payments AppSec needs to identify which third-party dependency findings to fix and shorten remediation time.",
+          "workflow": "Organization-approved GitHub App, phased repository onboarding and reachability-based dependency triage.",
+          "adoptionDefinition": "Share of agreed repositories with a successful dependency scan in the preceding 30 days.",
+          "successMeasure": "Median days to remediate resolved dependency findings in the actively scanned Payments scope."
+        }
+      ],
+      "coverageDefinition": "Share of agreed repositories with a successful dependency scan in the preceding 30 days."
+    },
+    {
+      "id": "astervale",
+      "initials": "AV",
+      "color": "mint",
+      "name": "AsterVale Health",
+      "industry": "Healthcare technology",
+      "segment": "Enterprise",
+      "product": "Endor Open Source",
+      "useCase": "Prioritize Clinical dependency findings using reachability. Scan Clinical Platform and Clinical Integrations repositories, then route prioritized findings to named owners.",
+      "renewal": "2027-03-31",
+      "health": "Watch",
+      "risk": "Medium",
+      "scoped": 125,
+      "target": 80,
+      "scans": [
+        62,
+        63,
+        64,
+        65,
+        65
+      ],
+      "healthReason": "The core team is seeing value. Rollout across Clinical Integrations is waiting on named repository owners.",
+      "value": {
+        "label": "Findings resolved within SLA",
+        "before": "48%",
+        "after": "62%",
+        "scope": "Dependency findings with a breached or met SLA in scanned Clinical Platform repositories, prior vs. latest 30 days.",
+        "eventId": "av-usage"
+      },
+      "contacts": [
+        {
+          "id": "elena",
+          "name": "Elena Brooks",
+          "title": "Head of Application Security",
+          "role": "Champion",
+          "team": "Clinical Platform",
+          "scope": "Current deployment",
+          "email": "elena@astervale.example"
+        },
+        {
+          "id": "jordan",
+          "name": "Jordan Kim",
+          "title": "Engineering Manager",
+          "role": "Technical owner",
+          "team": "Clinical Integrations",
+          "scope": "Rollout team",
+          "email": "jordan@astervale.example"
+        },
+        {
+          "id": "owen",
+          "name": "Owen Wells",
+          "title": "Director, Risk & Compliance",
+          "role": "Sponsor",
+          "team": "Risk & Compliance",
+          "scope": "Account oversight",
+          "email": "owen@astervale.example"
+        }
+      ],
+      "events": [
+        {
+          "id": "av-case",
+          "type": "support",
+          "at": "2026-11-19T19:20:00Z",
+          "title": "Clinical SCA rollout · owner mapping",
+          "summary": "The next 15 Clinical Integrations repositories are waiting for named owners before Endor Open Source onboarding.",
+          "contactIds": [
+            "elena",
+            "jordan"
+          ],
+          "fields": [
+            [
+              "Case",
+              "CS-214"
+            ],
+            [
+              "State",
+              "Waiting on customer owner"
+            ],
+            [
+              "Affected SCA scope",
+              "15 Clinical Integrations repositories"
+            ]
+          ],
+          "body": "Jordan has the repository inventory. Elena asked to confirm the first three repository owners before enabling dependency scanning and assigning follow-up on any reachable findings.",
+          "observations": [
+            {
+              "useCaseId": "clinical-sca",
+              "kind": "rollout_blocker",
+              "evidenceRole": "qualifying_evidence",
+              "observedText": "The next 15-repository dependency scanning batch is waiting on customer ownership. The team needs to confirm the first three owners.",
+              "sourcePart": "body"
+            }
+          ]
+        },
+        {
+          "id": "av-email",
+          "type": "email",
+          "at": "2026-11-17T18:36:00Z",
+          "title": "Owners for the next Clinical dependency-scanning batch",
+          "summary": "Jordan offered to review the owner list for the Clinical SCA rollout on November 23.",
+          "contactIds": [
+            "elena",
+            "jordan"
+          ],
+          "messages": [
+            {
+              "from": "elena",
+              "to": [
+                "jordan",
+                "morgan"
+              ],
+              "at": "2026-11-17T14:00:00Z",
+              "body": "Before we enable Endor Open Source for the next Clinical Integrations batch, I need owners for the first three repositories. They will review reachable dependency findings. Can we go through the repo inventory together?"
+            },
+            {
+              "from": "jordan",
+              "to": [
+                "elena",
+                "morgan"
+              ],
+              "at": "2026-11-17T18:36:00Z",
+              "body": "I have a draft list for the 15 Clinical repos. I can do 20 minutes on Monday the 23rd to confirm those first three owners and decide who will take the other twelve."
+            }
+          ],
+          "observations": [
+            {
+              "useCaseId": "clinical-sca",
+              "kind": "implementation_context",
+              "evidenceRole": "customer_statement",
+              "observedText": "The Clinical team needs the first three owners to route reachability-prioritized findings after onboarding.",
+              "sourcePart": "email_message",
+              "message": 1
+            },
+            {
+              "useCaseId": "clinical-sca",
+              "kind": "customer_commitment",
+              "evidenceRole": "customer_statement",
+              "observedText": "Jordan offered a November 23 session to name owners for the Clinical dependency-scanning batch.",
+              "sourcePart": "email_message",
+              "message": 2
+            }
+          ]
+        },
+        {
+          "id": "av-usage",
+          "type": "product",
+          "at": "2026-11-15T17:00:00Z",
+          "title": "Clinical dependency-scan coverage stays at 52%",
+          "summary": "Endor Open Source scanned 65 of 125 agreed Clinical repositories within 30 days.",
+          "contactIds": [],
+          "fields": [
+            [
+              "Repositories with a successful SCA scan",
+              "65 of 125"
+            ],
+            [
+              "Agreed rollout target",
+              "80%"
+            ],
+            [
+              "Dependency findings resolved within SLA",
+              "48% to 62%"
+            ]
+          ],
+          "body": "Clinical coverage is unchanged from the previous weekly check. For the subset of Clinical Platform repositories already scanning, the share of dependency findings resolved within SLA moved from 48% to 62%.",
+          "observations": [
+            {
+              "useCaseId": "clinical-sca",
+              "kind": "telemetry_report",
+              "evidenceRole": "operational_evidence",
+              "observedText": "Clinical coverage is 65 of 125 repositories. Dependency SLA performance improved within the already-scanning Clinical Platform scope.",
+              "sourcePart": "body"
+            }
+          ]
+        },
+        {
+          "id": "av-webinar",
+          "type": "webinar",
+          "at": "2026-11-09T16:55:00Z",
+          "title": "Using reachability to prioritize dependency findings",
+          "summary": "Elena attended an Endor Open Source enablement session on dependency triage.",
+          "contactIds": [
+            "elena"
+          ],
+          "fields": [
+            [
+              "Session",
+              "Using reachability to prioritize dependency findings"
+            ],
+            [
+              "Held",
+              "Nov 9, 2026 at 16:00 UTC"
+            ],
+            [
+              "Status",
+              "Attended"
+            ]
+          ],
+          "body": "The session covers reading reachability evidence and routing the dependency findings that need action to the right engineering owners.",
+          "observations": [
+            {
+              "useCaseId": "clinical-sca",
+              "kind": "enablement_engagement",
+              "evidenceRole": "passive_engagement",
+              "observedText": "Elena attended a dependency reachability enablement session.",
+              "sourcePart": "summary"
+            }
+          ]
+        },
+        {
+          "id": "av-content",
+          "type": "download",
+          "at": "2026-11-04T15:08:00Z",
+          "title": "Dependency-remediation SLA worksheet",
+          "summary": "Owen downloaded the Clinical team’s dependency-remediation SLA worksheet.",
+          "contactIds": [
+            "owen"
+          ],
+          "fields": [
+            [
+              "Asset",
+              "Dependency-remediation SLA worksheet"
+            ],
+            [
+              "Format",
+              "Spreadsheet template"
+            ],
+            [
+              "Campaign",
+              "Endor Open Source reporting"
+            ]
+          ],
+          "body": "The worksheet records a dependency findings baseline, SLA threshold, scanned repository scope and reporting period.",
+          "observations": [
+            {
+              "useCaseId": "clinical-sca",
+              "kind": "enablement_engagement",
+              "evidenceRole": "passive_engagement",
+              "observedText": "Owen downloaded the dependency SLA reporting worksheet.",
+              "sourcePart": "summary"
+            }
+          ]
+        }
+      ],
+      "productUseCases": [
+        {
+          "id": "clinical-sca",
+          "buyingGroupId": "clinical-appsec",
+          "capabilityId": "reachable_sca",
+          "stage": "deployed",
+          "label": "Prioritize Clinical dependency findings using reachability",
+          "customerProblem": "Clinical AppSec needs to prioritize dependency findings and close them within its remediation SLA.",
+          "workflow": "Scan Clinical Platform and Clinical Integrations repositories, then route prioritized findings to named owners.",
+          "adoptionDefinition": "Share of agreed repositories with a successful dependency scan in the preceding 30 days.",
+          "successMeasure": "Share of measured dependency findings in scanned Clinical Platform repositories resolved within SLA."
+        }
+      ],
+      "coverageDefinition": "Share of agreed repositories with a successful dependency scan in the preceding 30 days."
+    },
+    {
+      "id": "copperline",
+      "initials": "CC",
+      "color": "orange",
+      "name": "Copperline Cloud",
+      "industry": "Cloud infrastructure",
+      "segment": "Enterprise",
+      "product": "Endor Open Source",
+      "useCase": "Prioritize dependency fixes in Product Security’s repositories. Scan the Product Security repository scope and use reachability in dependency remediation triage.",
+      "renewal": "2027-05-28",
+      "health": "Healthy",
+      "risk": "Low",
+      "scoped": 100,
+      "target": 85,
+      "scans": [
+        87,
+        88,
+        90,
+        91,
+        92
+      ],
+      "healthReason": "Product Security's contracted deployment is above target. Platform Engineering requested a separate evaluation.",
+      "value": {
+        "label": "Median time to remediate",
+        "before": "10 days",
+        "after": "6 days",
+        "scope": "Resolved dependency findings in Product Security's contracted repository scope, prior vs. latest 30 days.",
+        "eventId": "cc-usage"
+      },
+      "buyingGroups": [
+        {
+          "id": "product-security",
+          "name": "Product Security",
+          "org": "Security · CISO organization",
+          "state": "Current customer",
+          "buyer": "nadia",
+          "goal": "Prioritize dependency findings and improve time to remediate.",
+          "scope": "100 repos in the existing Security contract."
+        },
+        {
+          "id": "platform-engineering",
+          "name": "Platform Engineering",
+          "org": "Engineering · CTO organization",
+          "state": "New buying group",
+          "buyer": "rina",
+          "goal": "Standardize dependency checks in the shared CI templates and reduce per-team setup effort.",
+          "scope": "Two CI template repos proposed. Platform Engineering owns the evaluation and funding decision."
+        }
+      ],
+      "contacts": [
+        {
+          "id": "lina",
+          "name": "Lina Morales",
+          "title": "Director, Product Security",
+          "role": "Incumbent champion",
+          "team": "Product Security",
+          "scope": "Current deployment",
+          "email": "lina@copperline.example",
+          "buyingGroupId": "product-security"
+        },
+        {
+          "id": "nadia",
+          "name": "Nadia Park",
+          "title": "Chief Information Security Officer",
+          "role": "Original economic buyer",
+          "team": "Product Security",
+          "scope": "Current deployment",
+          "email": "nadia@copperline.example",
+          "buyingGroupId": "product-security"
+        },
+        {
+          "id": "drew",
+          "name": "Drew Ito",
+          "title": "Director, Developer Productivity",
+          "role": "Pilot evaluator",
+          "team": "Developer Productivity",
+          "scope": "Adjacent buying group",
+          "email": "drew@copperline.example",
+          "buyingGroupId": "platform-engineering"
+        },
+        {
+          "id": "rina",
+          "name": "Rina Sen",
+          "title": "VP of Platform Engineering",
+          "role": "Target economic buyer",
+          "team": "Platform Engineering",
+          "scope": "Adjacent buying group",
+          "email": "rina@copperline.example",
+          "buyingGroupId": "platform-engineering"
+        }
+      ],
+      "events": [
+        {
+          "id": "cc-eval",
+          "type": "meeting",
+          "at": "2026-11-20T12:40:00Z",
+          "title": "Platform Engineering confirms its evaluation path",
+          "summary": "Rina named Drew as evaluator and asked for a first-party baseline on team setup time for Endor Open Source in two CI templates.",
+          "contactIds": [
+            "drew",
+            "rina"
+          ],
+          "buyingGroupIds": [
+            "platform-engineering"
+          ],
+          "fields": [
+            [
+              "Stage",
+              "Discovery requested"
+            ],
+            [
+              "Evaluation owner",
+              "Drew Ito"
+            ],
+            [
+              "Funding decision owner",
+              "Rina Sen · Platform Engineering"
+            ],
+            [
+              "Funding status",
+              "Pending pilot review"
+            ]
+          ],
+          "body": "Rina asked Morgan to lead discovery with Drew. She wants to baseline how long teams take to enable dependency checks today, then verify successful Endor Open Source scans and usable reachability results on both templates. Platform Engineering will make its funding decision after reviewing the pilot.",
+          "observations": [
+            {
+              "useCaseId": "platform-sca-pilot",
+              "kind": "evaluation_path",
+              "evidenceRole": "evaluation_context",
+              "observedText": "Rina named Drew as evaluator, requested a separate setup-time baseline and expects scan and reachability results before deciding on funding.",
+              "sourcePart": "body"
+            }
+          ]
+        },
+        {
+          "id": "cc-signal",
+          "type": "signal",
+          "at": "2026-11-19T16:35:00Z",
+          "title": "Hiring mentions dependency checks in shared CI",
+          "summary": "A fictional role posting mentions standardizing dependency checks in shared CI templates.",
+          "contactIds": [],
+          "buyingGroupIds": [
+            "platform-engineering"
+          ],
+          "fields": [
+            [
+              "Source",
+              "Simulated Clay / Sumble feed"
+            ],
+            [
+              "Public signal",
+              "Staff Engineer, Developer Productivity"
+            ],
+            [
+              "Signal date",
+              "Nov 19, 2026"
+            ]
+          ],
+          "body": "The simulated job posting mentions shared CI dependency checks. It is context for how Platform Engineering might standardize dependency scanning. Scope and timing would need confirmation from Drew.",
+          "observations": [
+            {
+              "useCaseId": "platform-sca-pilot",
+              "kind": "market_context",
+              "evidenceRole": "market_context",
+              "observedText": "A simulated hiring signal mentions standardizing dependency checks in shared CI.",
+              "sourcePart": "body"
+            }
+          ]
+        },
+        {
+          "id": "cc-email",
+          "type": "email",
+          "at": "2026-11-18T17:27:00Z",
+          "title": "Introduction for a shared CI dependency-scanning pilot",
+          "summary": "Lina offered Product Security as a reference. Drew requested a separate Platform Engineering evaluation on two shared CI templates.",
+          "contactIds": [
+            "lina",
+            "drew"
+          ],
+          "buyingGroupIds": [
+            "product-security",
+            "platform-engineering"
+          ],
+          "messages": [
+            {
+              "from": "lina",
+              "to": [
+                "drew",
+                "morgan"
+              ],
+              "at": "2026-11-17T17:00:00Z",
+              "body": "Drew, Product Security bought Endor Open Source to prioritize dependency findings using reachability. I can share our scoped remediation results. I've copied Morgan to discuss whether Endor Open Source could work for your shared CI templates."
+            },
+            {
+              "from": "drew",
+              "to": [
+                "lina",
+                "morgan"
+              ],
+              "at": "2026-11-18T17:27:00Z",
+              "body": "Thanks, Lina. Platform Engineering needs standard dependency checks without asking each service owner to build separate configuration. Can we scope Endor Open Source scans on two templates and baseline setup minutes per team? Rina owns this decision for Platform Engineering."
+            }
+          ],
+          "observations": [
+            {
+              "useCaseId": "security-sca",
+              "kind": "incumbent_reference",
+              "evidenceRole": "reference_context",
+              "observedText": "Lina offered to share Product Security’s dependency remediation results as an incumbent reference.",
+              "sourcePart": "email_message",
+              "message": 1
+            },
+            {
+              "useCaseId": "platform-sca-pilot",
+              "kind": "discovery_request",
+              "evidenceRole": "qualifying_evidence",
+              "observedText": "Drew requested a two-template Endor Open Source evaluation and a separate setup-time baseline for Platform Engineering.",
+              "sourcePart": "email_message",
+              "message": 2
+            }
+          ]
+        },
+        {
+          "id": "cc-usage",
+          "type": "product",
+          "at": "2026-11-16T16:00:00Z",
+          "title": "Product Security passes its dependency-scanning target",
+          "summary": "Endor Open Source scanned 92 of 100 Product Security repositories against an 85% target.",
+          "contactIds": [],
+          "buyingGroupIds": [
+            "product-security"
+          ],
+          "fields": [
+            [
+              "Deployment",
+              "Product Security · existing agreement"
+            ],
+            [
+              "Repositories with a successful SCA scan",
+              "92 of 100"
+            ],
+            [
+              "Agreed rollout target",
+              "85%"
+            ],
+            [
+              "Median dependency remediation time",
+              "10 days to 6 days"
+            ]
+          ],
+          "body": "Median remediation time for resolved dependency findings in the incumbent Product Security scope moved from 10 to 6 days. The Platform Engineering pilot has its own proposed setup-time metric.",
+          "observations": [
+            {
+              "useCaseId": "security-sca",
+              "kind": "telemetry_report",
+              "evidenceRole": "operational_evidence",
+              "observedText": "Product Security reports 92 of 100 repositories scanned and a 10-to-6-day median to remediate resolved dependency findings in its existing scope.",
+              "sourcePart": "body"
+            }
+          ]
+        },
+        {
+          "id": "cc-webinar",
+          "type": "webinar",
+          "at": "2026-11-12T20:06:00Z",
+          "title": "Running dependency scans in shared CI templates",
+          "summary": "Drew registered for a fictional Endor Open Source workshop on shared CI templates.",
+          "contactIds": [
+            "drew"
+          ],
+          "buyingGroupIds": [
+            "platform-engineering"
+          ],
+          "fields": [
+            [
+              "Session",
+              "Running dependency scans in shared CI templates"
+            ],
+            [
+              "Scheduled",
+              "Dec 2, 2026 at 18:00 UTC"
+            ],
+            [
+              "Status",
+              "Registered"
+            ]
+          ],
+          "body": "The workshop covers selecting two initial templates, running dependency scans through shared CI and comparing setup time.",
+          "observations": [
+            {
+              "useCaseId": "platform-sca-pilot",
+              "kind": "enablement_engagement",
+              "evidenceRole": "passive_engagement",
+              "observedText": "Drew registered for a shared CI dependency-scanning workshop.",
+              "sourcePart": "summary"
+            }
+          ]
+        },
+        {
+          "id": "cc-content",
+          "type": "download",
+          "at": "2026-11-08T17:41:00Z",
+          "title": "Planning dependency-scanning rollout across teams",
+          "summary": "Rina downloaded a phased Endor Open Source rollout guide.",
+          "contactIds": [
+            "rina"
+          ],
+          "buyingGroupIds": [
+            "platform-engineering"
+          ],
+          "fields": [
+            [
+              "Asset",
+              "Planning dependency-scanning rollout across teams"
+            ],
+            [
+              "Format",
+              "Field guide"
+            ],
+            [
+              "Campaign",
+              "Endor Open Source multi-team adoption"
+            ]
+          ],
+          "body": "The guide covers selecting shared CI templates, agreeing a setup-time baseline, and confirming that the first dependency scans produce results teams can use.",
+          "observations": [
+            {
+              "useCaseId": "platform-sca-pilot",
+              "kind": "enablement_engagement",
+              "evidenceRole": "passive_engagement",
+              "observedText": "Rina downloaded a dependency-scanning rollout guide.",
+              "sourcePart": "summary"
+            }
+          ]
+        }
+      ],
+      "productUseCases": [
+        {
+          "id": "security-sca",
+          "buyingGroupId": "product-security",
+          "capabilityId": "reachable_sca",
+          "stage": "deployed",
+          "label": "Prioritize dependency fixes in Product Security’s repositories",
+          "customerProblem": "Product Security wants to reduce the time spent resolving open-source dependency findings in its contracted repositories.",
+          "workflow": "Scan the Product Security repository scope and use reachability in dependency remediation triage.",
+          "adoptionDefinition": "Share of agreed repositories with a successful dependency scan in the preceding 30 days.",
+          "successMeasure": "Median days to remediate resolved dependency findings within the Product Security deployment."
+        },
+        {
+          "id": "platform-sca-pilot",
+          "buyingGroupId": "platform-engineering",
+          "capabilityId": "reachable_sca",
+          "stage": "proposed",
+          "label": "Standardize dependency checks in two shared CI templates",
+          "customerProblem": "Platform Engineering wants teams to adopt consistent dependency checks without each service owner configuring them independently.",
+          "workflow": "Evaluate Endor Open Source dependency scanning and reachability output in two shared CI templates.",
+          "adoptionDefinition": "Proposed pilot checks for successful dependency scans and actionable results from both shared templates.",
+          "successMeasure": "Proposed measurement is setup minutes per team before and after the pilot. Current baseline and target are pending."
+        }
+      ],
+      "coverageDefinition": "Share of agreed repositories with a successful dependency scan in the preceding 30 days."
+    },
+    {
+      "id": "stratos",
+      "initials": "SC",
+      "color": "blue",
+      "name": "Stratos Commerce",
+      "industry": "Retail technology",
+      "segment": "Mid-market",
+      "product": "Endor Open Source",
+      "useCase": "Prioritize Storefront container image findings. Scan the service image built from each onboarded repository and use reachability to prioritize image findings.",
+      "renewal": "2027-04-23",
+      "health": "Healthy",
+      "risk": "Low",
+      "scoped": 80,
+      "target": 80,
+      "scans": [
+        64,
+        65,
+        66,
+        68,
+        68
+      ],
+      "healthReason": "The Storefront deployment is above target. Fulfillment has asked for a scoping session.",
+      "value": {
+        "label": "Weekly container-finding triage time",
+        "before": "6.5 hours",
+        "after": "4 hours",
+        "scope": "Storefront lead's time log for triaging container image findings, four-week average before and after rollout.",
+        "eventId": "sc-review"
+      },
+      "contacts": [
+        {
+          "id": "samira",
+          "name": "Samira Patel",
+          "title": "Head of Product Security",
+          "role": "Champion",
+          "team": "Storefront",
+          "scope": "Current deployment",
+          "email": "samira@stratoscommerce.example"
+        },
+        {
+          "id": "felix",
+          "name": "Felix Ortega",
+          "title": "Engineering Director",
+          "role": "Pilot evaluator",
+          "team": "Fulfillment",
+          "scope": "Adjacent buying group",
+          "email": "felix@stratoscommerce.example"
+        },
+        {
+          "id": "hannah",
+          "name": "Hannah Bell",
+          "title": "Senior Platform Engineer",
+          "role": "Technical owner",
+          "team": "Storefront",
+          "scope": "Current deployment",
+          "email": "hannah@stratoscommerce.example"
+        }
+      ],
+      "events": [
+        {
+          "id": "sc-meeting",
+          "type": "meeting",
+          "at": "2026-11-19T20:30:00Z",
+          "title": "Fulfillment container image scanning discovery",
+          "summary": "Felix requested a pilot for the images built from three Fulfillment service repositories.",
+          "contactIds": [
+            "samira",
+            "felix"
+          ],
+          "fields": [
+            [
+              "Meeting",
+              "Fulfillment container image scanning discovery"
+            ],
+            [
+              "Proposed scope",
+              "Images built from three Fulfillment repositories"
+            ],
+            [
+              "Status",
+              "Discovery requested"
+            ]
+          ],
+          "body": "Felix asked to scope an Endor Open Source container image scan for the images built from three services. He wants to understand engineering effort and offered to invite a service owner to the next discussion. Funding and the decision date are still open.",
+          "observations": [
+            {
+              "useCaseId": "fulfillment-container-pilot",
+              "kind": "discovery_request",
+              "evidenceRole": "qualifying_evidence",
+              "observedText": "Felix requested discovery for Endor Open Source container image scanning on three Fulfillment services.",
+              "sourcePart": "body"
+            }
+          ]
+        },
+        {
+          "id": "sc-signal",
+          "type": "signal",
+          "at": "2026-11-18T15:20:00Z",
+          "title": "Fulfillment standardizes container build pipelines",
+          "summary": "A fictional engineering update mentions standardizing Fulfillment service image builds.",
+          "contactIds": [],
+          "fields": [
+            [
+              "Source",
+              "Simulated public web feed"
+            ],
+            [
+              "Public signal",
+              "Fulfillment image build standardization"
+            ],
+            [
+              "Signal date",
+              "Nov 18, 2026"
+            ]
+          ],
+          "body": "The mock public update describes common image build pipelines for Fulfillment. It is context for a consistent container image scanning pilot. The exact services and level of interest require confirmation.",
+          "observations": [
+            {
+              "useCaseId": "fulfillment-container-pilot",
+              "kind": "market_context",
+              "evidenceRole": "market_context",
+              "observedText": "A simulated engineering update mentions standardizing the Fulfillment service image build process.",
+              "sourcePart": "body"
+            }
+          ]
+        },
+        {
+          "id": "sc-review",
+          "type": "meeting",
+          "at": "2026-11-16T17:30:00Z",
+          "title": "Storefront image scan coverage and triage review",
+          "summary": "Images built from 68 of 80 Storefront service repositories were scanned. The team reported lower weekly container-finding triage time.",
+          "contactIds": [
+            "hannah"
+          ],
+          "fields": [
+            [
+              "Repositories with a scanned image",
+              "68 of 80"
+            ],
+            [
+              "Agreed rollout target",
+              "80%"
+            ],
+            [
+              "Storefront container-finding triage time",
+              "6.5 hours to 4 hours per week"
+            ]
+          ],
+          "body": "Hannah shared the Storefront time log for triaging Endor Open Source container image findings with reachability context. Weekly time fell from 6.5 to 4 hours for the measured Storefront team across the two four-week periods.",
+          "observations": [
+            {
+              "useCaseId": "storefront-container",
+              "kind": "scoped_value_report",
+              "evidenceRole": "operational_evidence",
+              "observedText": "Storefront reported 6.5 to 4 hours per week triaging container image findings in the measured cohort.",
+              "sourcePart": "body"
+            }
+          ]
+        },
+        {
+          "id": "sc-email",
+          "type": "email",
+          "at": "2026-11-13T16:15:00Z",
+          "title": "Storefront container triage results for the account review",
+          "summary": "Samira approved using the measured Storefront container triage time in its internal recap.",
+          "contactIds": [
+            "samira",
+            "hannah"
+          ],
+          "messages": [
+            {
+              "from": "hannah",
+              "to": [
+                "samira",
+                "morgan"
+              ],
+              "at": "2026-11-13T14:15:00Z",
+              "body": "Our four-week Storefront average for triaging container image findings is now 4 hours a week. Before we added Endor Open Source image scanning and used reachability in triage, we recorded a 6.5-hour weekly baseline."
+            },
+            {
+              "from": "samira",
+              "to": [
+                "hannah",
+                "morgan"
+              ],
+              "at": "2026-11-13T16:15:00Z",
+              "body": "Please use that Storefront time log in our account review. I can explain how we prioritized image findings if Fulfillment wants to evaluate the same capability with its service owners."
+            }
+          ],
+          "observations": [
+            {
+              "useCaseId": "storefront-container",
+              "kind": "scoped_value_report",
+              "evidenceRole": "operational_evidence",
+              "observedText": "Hannah reported 6.5 to 4 weekly triage hours in the Storefront container-image scope.",
+              "sourcePart": "email_message",
+              "message": 1
+            },
+            {
+              "useCaseId": "storefront-container",
+              "kind": "scoped_value_acknowledgement",
+              "evidenceRole": "customer_statement",
+              "observedText": "Samira approved citing Storefront’s measured container triage time in its internal recap.",
+              "sourcePart": "email_message",
+              "message": 2
+            }
+          ]
+        },
+        {
+          "id": "sc-content",
+          "type": "download",
+          "at": "2026-11-06T14:09:00Z",
+          "title": "Endor Open Source container image scanning checklist",
+          "summary": "Felix downloaded the fictional launch checklist for container image scanning.",
+          "contactIds": [
+            "felix"
+          ],
+          "fields": [
+            [
+              "Asset",
+              "Endor Open Source container image scanning checklist"
+            ],
+            [
+              "Format",
+              "Implementation checklist"
+            ],
+            [
+              "Campaign",
+              "Container security enablement"
+            ]
+          ],
+          "body": "The checklist covers selecting a service image cohort, verifying which CI builds produce those images, and setting a baseline for triaging image findings.",
+          "observations": [
+            {
+              "useCaseId": "fulfillment-container-pilot",
+              "kind": "enablement_engagement",
+              "evidenceRole": "passive_engagement",
+              "observedText": "Felix downloaded an image scanning readiness checklist.",
+              "sourcePart": "summary"
+            }
+          ]
+        }
+      ],
+      "productUseCases": [
+        {
+          "id": "storefront-container",
+          "buyingGroupId": "storefront",
+          "capabilityId": "container_reachability",
+          "stage": "deployed",
+          "label": "Prioritize Storefront container image findings",
+          "customerProblem": "Storefront AppSec spends engineering time triaging package findings in its build images.",
+          "workflow": "Scan the service image built from each onboarded repository and use reachability to prioritize image findings.",
+          "adoptionDefinition": "Share of agreed service repositories whose built image had a successful container scan in the preceding 30 days.",
+          "successMeasure": "Weekly team hours spent triaging Storefront container-image findings, from the team’s time log."
+        },
+        {
+          "id": "fulfillment-container-pilot",
+          "buyingGroupId": "fulfillment",
+          "capabilityId": "container_reachability",
+          "stage": "proposed",
+          "label": "Evaluate container image scanning for Fulfillment services",
+          "customerProblem": "Fulfillment wants a consistent way to prioritize image findings across service teams.",
+          "workflow": "Pilot scans of the images built from three Fulfillment service repositories.",
+          "adoptionDefinition": "The proposed scope is successful image scans from three service repositories. No pilot telemetry is recorded yet.",
+          "successMeasure": "Proposed measurement compares weekly container-image triage time for the same service cohort."
+        }
+      ],
+      "coverageDefinition": "Share of agreed service repositories whose built image had a successful container scan in the preceding 30 days."
+    },
+    {
+      "id": "ironvale",
+      "initials": "IL",
+      "color": "slate",
+      "name": "Ironvale Logistics",
+      "industry": "Logistics",
+      "segment": "Mid-market",
+      "product": "Endor Code",
+      "useCase": "Triage actionable first-party code findings in Routing. Enable AI SAST on agreed Routing repositories, then review and route first-party code findings with engineering owners.",
+      "renewal": "2027-07-02",
+      "health": "Healthy",
+      "risk": "Low",
+      "scoped": 60,
+      "target": 85,
+      "scans": [
+        38,
+        40,
+        41,
+        44,
+        46
+      ],
+      "healthReason": "Endor Code AI SAST coverage is progressing toward 85%. Routing has owners and a December 1 checkpoint for five new repositories.",
+      "value": {
+        "label": "Median time to remediate first-party code findings",
+        "before": "11 days",
+        "after": "9 days",
+        "scope": "Resolved first-party code findings in AI SAST-scanned Routing repositories, prior vs. latest 30 days.",
+        "eventId": "il-usage"
+      },
+      "contacts": [
+        {
+          "id": "devon",
+          "name": "Devon Shaw",
+          "title": "Director, Security Engineering",
+          "role": "Champion",
+          "team": "Routing Security",
+          "scope": "Current deployment",
+          "email": "devon@ironvalelogistics.example"
+        },
+        {
+          "id": "sofia",
+          "name": "Sofia Alvarez",
+          "title": "Platform Engineering Lead",
+          "role": "Technical owner",
+          "team": "Routing Platform",
+          "scope": "Current deployment",
+          "email": "sofia@ironvalelogistics.example"
+        },
+        {
+          "id": "arjun",
+          "name": "Arjun Rao",
+          "title": "VP of Technology",
+          "role": "Executive sponsor",
+          "team": "Technology",
+          "scope": "Account oversight",
+          "email": "arjun@ironvalelogistics.example"
+        }
+      ],
+      "events": [
+        {
+          "id": "il-email",
+          "type": "email",
+          "at": "2026-11-18T17:46:00Z",
+          "title": "December AI SAST rollout batch",
+          "summary": "Sofia confirmed the December 1 AI SAST onboarding batch for five new Routing repositories.",
+          "contactIds": [
+            "sofia",
+            "devon"
+          ],
+          "messages": [
+            {
+              "from": "devon",
+              "to": [
+                "sofia",
+                "morgan"
+              ],
+              "at": "2026-11-18T13:10:00Z",
+              "body": "We're at 46 of 60 Routing repositories with a recent Endor Code AI SAST scan. Can we use the next five to reach 85% coverage before the December review and check that each owner can review their first-party code findings?"
+            },
+            {
+              "from": "sofia",
+              "to": [
+                "devon",
+                "morgan"
+              ],
+              "at": "2026-11-18T17:46:00Z",
+              "body": "Yes. The five Routing code owners are confirmed, and I've booked the AI SAST batch for December 1. I'll share the first successful scans and confirm where developers can review the findings."
+            }
+          ],
+          "observations": [
+            {
+              "useCaseId": "routing-sast",
+              "kind": "rollout_review",
+              "evidenceRole": "customer_statement",
+              "observedText": "Devon proposed a five-repository AI SAST batch to reach the Routing 85% coverage target.",
+              "sourcePart": "email_message",
+              "message": 1
+            },
+            {
+              "useCaseId": "routing-sast",
+              "kind": "customer_commitment",
+              "evidenceRole": "customer_statement",
+              "observedText": "Sofia confirmed December 1 for five AI SAST repositories and agreed to share the first-scan results.",
+              "sourcePart": "email_message",
+              "message": 2
+            }
+          ]
+        },
+        {
+          "id": "il-usage",
+          "type": "product",
+          "at": "2026-11-17T16:00:00Z",
+          "title": "Routing AI SAST coverage reaches 77%",
+          "summary": "46 of 60 Routing repositories have a successful Endor Code AI SAST scan in 30 days, up from 38 four weeks ago.",
+          "contactIds": [],
+          "fields": [
+            [
+              "Repositories with a successful AI SAST scan",
+              "46 of 60"
+            ],
+            [
+              "Agreed rollout target",
+              "85%"
+            ],
+            [
+              "Median remediation time for first-party code findings",
+              "11 days to 9 days"
+            ]
+          ],
+          "body": "Routing has eight more actively scanned repositories than four weeks earlier. Median remediation time for resolved first-party code findings within the already-scanned scope moved from 11 to 9 days.",
+          "observations": [
+            {
+              "useCaseId": "routing-sast",
+              "kind": "telemetry_report",
+              "evidenceRole": "operational_evidence",
+              "observedText": "The Routing report shows 46 of 60 repositories with AI SAST scans and an 11-to-9-day median remediation change in the active first-party code scope.",
+              "sourcePart": "body"
+            }
+          ]
+        },
+        {
+          "id": "il-webinar",
+          "type": "webinar",
+          "at": "2026-11-11T18:20:00Z",
+          "title": "Operating AI SAST in engineering workflows",
+          "summary": "Sofia registered for a fictional Endor Code customer webinar on AI SAST rollout.",
+          "contactIds": [
+            "sofia"
+          ],
+          "fields": [
+            [
+              "Session",
+              "Operating AI SAST in engineering workflows"
+            ],
+            [
+              "Scheduled",
+              "Dec 3, 2026 at 17:00 UTC"
+            ],
+            [
+              "Status",
+              "Registered"
+            ]
+          ],
+          "body": "The session covers validating first scans and making first-party source-code findings available to responsible developers.",
+          "observations": [
+            {
+              "useCaseId": "routing-sast",
+              "kind": "enablement_engagement",
+              "evidenceRole": "passive_engagement",
+              "observedText": "Sofia registered for an AI SAST enablement webinar.",
+              "sourcePart": "summary"
+            }
+          ]
+        },
+        {
+          "id": "il-content",
+          "type": "download",
+          "at": "2026-11-03T16:16:00Z",
+          "title": "Measuring first-party code security rollout",
+          "summary": "Arjun downloaded a fictional leadership guide for measuring Endor Code AI SAST adoption.",
+          "contactIds": [
+            "arjun"
+          ],
+          "fields": [
+            [
+              "Asset",
+              "Measuring first-party code security rollout"
+            ],
+            [
+              "Format",
+              "Executive guide"
+            ],
+            [
+              "Campaign",
+              "Endor Code reporting"
+            ]
+          ],
+          "body": "The guide covers tracking AI SAST scans across a defined repository scope and reviewing changes in remediation of first-party code findings.",
+          "observations": [
+            {
+              "useCaseId": "routing-sast",
+              "kind": "enablement_engagement",
+              "evidenceRole": "passive_engagement",
+              "observedText": "Arjun downloaded a leadership guide for AI SAST adoption and first-party code remediation.",
+              "sourcePart": "summary"
+            }
+          ]
+        }
+      ],
+      "productUseCases": [
+        {
+          "id": "routing-sast",
+          "buyingGroupId": "routing",
+          "capabilityId": "ai_sast",
+          "stage": "deployed",
+          "label": "Triage actionable first-party code findings in Routing",
+          "customerProblem": "Routing Engineering wants actionable security findings in its own application code and shorter time to remediate them.",
+          "workflow": "Enable AI SAST on agreed Routing repositories, then review and route first-party code findings with engineering owners.",
+          "adoptionDefinition": "Share of agreed Routing repositories with a successful AI SAST scan in the preceding 30 days.",
+          "successMeasure": "Median days to remediate resolved first-party code findings in the active Routing scope."
+        }
+      ],
+      "coverageDefinition": "Share of agreed Routing repositories with a successful AI SAST scan in the preceding 30 days."
+    }
+  ],
+  "productCatalog": [
+    {
+      "id": "endor_open_source",
+      "name": "Endor Open Source",
+      "description": "Application security for open-source dependencies and container images.",
+      "officialUrl": "https://www.endorlabs.com/pricing"
+    },
+    {
+      "id": "endor_code",
+      "name": "Endor Code",
+      "description": "Application security for first-party code, including AI SAST.",
+      "officialUrl": "https://www.endorlabs.com/pricing"
+    }
+  ],
+  "productCapabilities": [
+    {
+      "id": "reachable_sca",
+      "productLineId": "endor_open_source",
+      "name": "Reachability-based SCA",
+      "problem": "Dependency scanners can create more alerts than developers can act on. Reachability gives application context for which findings to review and fix first.",
+      "officialUrl": "https://www.endorlabs.com/use-cases"
+    },
+    {
+      "id": "container_reachability",
+      "productLineId": "endor_open_source",
+      "name": "Container image scanning and reachability",
+      "problem": "Container images contain many packages. Image scanning and reachability help AppSec teams prioritize fixes based on what their applications use.",
+      "officialUrl": "https://www.endorlabs.com/learn/container-security-reachability"
+    },
+    {
+      "id": "ai_sast",
+      "productLineId": "endor_code",
+      "name": "AI SAST",
+      "problem": "Developers need actionable first-party code findings with enough context to triage and remediate them in their development workflow.",
+      "officialUrl": "https://www.endorlabs.com/use-case/ai-sast"
+    }
+  ]
+}

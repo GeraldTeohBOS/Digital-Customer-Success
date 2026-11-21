@@ -1,0 +1,2 @@
+"workstream_id","account_id","job_kind","detected_on","severity","risk_reason","customer_impact","escalation_condition"
+"brackenpay:risk","AC0001","risk","2026-11-19","high","Payments needs organization-level Endor Labs GitHub App approval for SCA.","Current coverage is 34 of 100 repositories against the agreed 75. The next 10 are on hold.","If November 24 passes without approval or a credible decision date, align with Support and the account team."

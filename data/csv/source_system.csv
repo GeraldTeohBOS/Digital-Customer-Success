@@ -1,0 +1,8 @@
+"source_id","name","source_kind","authority"
+"cs_review","CSM assessment","first_party","Qualitative customer health and churn-risk assessment"
+"customer_email","Customer email","first_party","Customer statements, introductions and commitments"
+"market_research","Market research","third_party","Context about public initiatives and hiring"
+"marketing","Marketing events","first_party","Webinar registrations, attendance and content downloads"
+"product_telemetry","Endor Labs product telemetry","first_party","Capability-specific scans, contributing developers and scoped value observations"
+"salesforce","Salesforce CRM","first_party","Account ownership, contract entitlements, buying groups and meeting notes"
+"support","Support cases","first_party","Implementation blockers and updates"

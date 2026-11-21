@@ -1,0 +1,2 @@
+"workstream_id","account_id","job_kind","contract_id","annual_recurring_revenue_minor","currency","notice_due_on","readiness","sponsor_id","sponsor_ack_event_id","baseline_measurement_id","observed_measurement_id","proposed_value_target"
+"brackenpay:renewal","AC0001","renewal","brackenpay:primary-contract","18000000","USD","2027-01-16","evidence_pending","brackenpay:priya","","brackenpay:primary-deployment:baseline","brackenpay:primary-deployment:observed","Validate with Priya whether a seven-day median is the right target."

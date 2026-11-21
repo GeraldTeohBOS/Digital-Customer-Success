@@ -1,0 +1,13 @@
+*
+!src/
+!src/*.mjs
+!visual/
+!visual/style.css
+!production/
+!production/Dockerfile
+!production/*.mjs
+!production/package.json
+!production/package-lock.json
+!production/schema.sql
+!production/public/
+!production/public/*

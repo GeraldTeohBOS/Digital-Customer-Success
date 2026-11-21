@@ -1,0 +1,14 @@
+.pilot-controls select { max-inline-size:min(100%,27rem); }
+.pilot-controls .stamp { text-align:left; max-inline-size:none; }
+.pilot-graph { margin-block:16px; }
+.pilot-outreach { margin-block:16px; }
+.pilot-map .map-lanes { --lane-count:2; }
+.pilot-map .map-lane { min-height:100px; }
+.pilot-map #contact-nodes { max-block-size:min(45vh,24rem); overflow:auto; justify-content:start; padding:3px; }
+.pilot-map #contact-path { stroke:var(--accent); stroke-width:2; }
+.pilot-timeline { margin-block:16px; }
+.pilot-timeline .timeline-detail:empty { display:none; }
+.pilot-timeline .timeline-detail { max-block-size:min(58vh,32rem); overflow:auto; }
+.pilot-timeline .timeline-detail h2 { overflow-wrap:anywhere; }
+.pilot-summary { margin-top:12px; overflow-wrap:anywhere; }
+.foot code { overflow-wrap:anywhere; }

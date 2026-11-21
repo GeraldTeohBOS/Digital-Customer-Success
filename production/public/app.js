@@ -2,6 +2,7 @@ const select = document.querySelector("#account-select");
 const refreshButton = document.querySelector("#refresh");
 const freshness = document.querySelector("#freshness");
 const notice = document.querySelector("#notice");
+const roleIndicator = document.querySelector("#account-role");
 const accountView = document.querySelector("#account-view");
 const contacts = document.querySelector("#contact-nodes");
 const timeline = document.querySelector("#events");
@@ -11,6 +12,7 @@ const esc = value => String(value ?? "").replace(/[&<>"']/g,character =>
   ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[character]);
 
 let selectedAccount;
+let accounts = [];
 let selectedNode;
 let selectedEvent;
 let graph;
@@ -29,6 +31,12 @@ async function call(name,args = {}) {
   const {result,error} = await response.json();
   if (error || result?.isError) throw new Error(error?.message || result.content[0].text);
   return result.structuredContent;
+}
+
+function hideAccount() {
+  accountView.hidden = true;
+  roleIndicator.hidden = true;
+  document.dispatchEvent(new CustomEvent("pilot-account",{detail:null}));
 }
 
 function connectNode() {
@@ -112,8 +120,9 @@ async function refresh(refreshAccounts = true) {
   notice.hidden = true;
   try {
     if (refreshAccounts) {
-      const {accounts} = await call("list_accounts");
+      const {accounts:visible} = await call("list_accounts");
       if (current !== revision) return;
+      accounts = visible;
       const optionsKey = JSON.stringify(accounts.map(row => [row.account_id,row.account_name]));
       if (optionsKey !== accountOptionsKey) {
         accountOptionsKey = optionsKey;
@@ -124,7 +133,7 @@ async function refresh(refreshAccounts = true) {
       select.value = selectedAccount ?? "";
     }
     if (!selectedAccount) {
-      accountView.hidden = true;
+      hideAccount();
       freshness.textContent = "No assigned Salesforce accounts";
       return;
     }
@@ -132,15 +141,20 @@ async function refresh(refreshAccounts = true) {
     const [next,timelineResult] = await Promise.all([call("get_knowledge_graph",args),call("list_timeline",{...args,limit:50})]);
     if (current !== revision) return;
     accountView.hidden = false;
+    const {roles,permissions} = accounts.find(row => row.account_id === args.account);
+    roleIndicator.textContent = roles.map(role => ({viewer:"Viewer",csm:"CSM",approver:"Approver",
+      gong_operator:"Gong operator",access_admin:"Access admin"})[role]).join(" · ");
+    roleIndicator.hidden = false;
     const synced = Math.min(Date.parse(next.freshness.synced_at),Date.parse(timelineResult.freshness.synced_at));
     freshness.textContent = "Salesforce synced " + display(synced) + (Date.now()-synced > 900000 ? " · Check sync" : "");
     renderGraph(next);
     renderTimeline(timelineResult.events);
     connectNode();
-    document.dispatchEvent(new CustomEvent("pilot-account",{detail:{accountId:args.account,contacts:next.nodes.filter(node=>node.type==="person")}}));
+    document.dispatchEvent(new CustomEvent("pilot-account",{detail:{accountId:args.account,permissions,
+      contacts:next.nodes.filter(node=>node.type==="person")}}));
   } catch (error) {
     if (current !== revision) return;
-    accountView.hidden = true;
+    hideAccount();
     notice.textContent = error.message;
     notice.hidden = false;
     freshness.textContent = "Refresh unavailable";
@@ -159,6 +173,19 @@ select.addEventListener("change",() => {
   refresh(false);
 });
 refreshButton.addEventListener("click",() => refresh());
+document.querySelector("#sign-out").addEventListener("click",async event => {
+  const button = event.currentTarget;
+  button.disabled = true;
+  try {
+    const response = await fetch("/logout",{method:"POST"});
+    if (!response.ok) throw new Error("Sign-out failed. Try again.");
+    location.assign("/");
+  } catch {
+    notice.textContent = "Sign-out failed. Try again.";
+    notice.hidden = false;
+    button.disabled = false;
+  }
+});
 document.querySelector(".pilot-map").addEventListener("click",event => {
   const node = event.target.closest("[data-node]")?.dataset.node;
   if (node && graph) inspectNode(node);

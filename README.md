@@ -2,7 +2,7 @@
 
 Explore account and contact changes, approve an outreach draft, and queue a manual Gong email task. This Endor Labs concept includes fictional demo data and a separate path for a workplace sandbox.
 
-## Run the demo
+## Test the demo
 
 Use Node.js 24 or newer. Run these commands from the repository root.
 
@@ -11,17 +11,34 @@ npm --prefix production ci
 npm --prefix production run demo
 ```
 
-Open [the local console](http://127.0.0.1:8080) and select **Open demo**. Choose **Copperline CRM Sandbox** and use **Gong outreach** to save a draft for Jo Mercer. Edit and save the copy, approve the saved version, then click **Simulate Gong queue**. The console displays the simulated flow instance. The demo runs on your machine with an in-memory database and a Gong simulator. Restarting it resets the test data.
+Open [the local console](http://127.0.0.1:8080). The demo uses fictional data and a Gong simulator and needs no workplace credentials. Use **Sign out** to switch personas while keeping the same data. Restarting the demo resets all drafts and role changes.
 
-Try editing the subject before approval. The console asks you to save the revised copy first. After approval, check that the subject and body are locked and the queue action records one assignment. If you test the project for someone else, report the step you tried, the outcome you expected, and what you observed.
+| Sign in as | What to do | Expected result |
+|---|---|---|
+| **Morgan · CSM** | Choose **Copperline CRM Sandbox**. Under **Gong outreach**, save a draft for Jo Mercer and edit the subject. | Morgan can edit the saved draft. Approval and queueing require another role. |
+| **Avery · Approver** | Open Morgan’s draft from **Saved drafts**. Select **Approve saved copy**. | The exact saved subject and body are read-only and the status becomes **Approved**. |
+| **Jordan · Gong operator** | Open the approved draft and select **Simulate Gong queue**. Reopen the draft. | The status is **Manual task queued** with one simulated flow instance ID. |
+| **Riley · Viewer** | Open the Copperline timeline and account graph. | Riley sees account activity. Drafts and the access administration panel are hidden. |
+| **Sam · Access admin** | Under **Account access**, choose `001000000000002AAA` (Stratos). Grant **Viewer** to `demo-riley`, then sign in as Riley to check the account picker. Sign back in as Sam and revoke the grant. | Stratos appears for Riley after the grant and disappears after revocation. Sam can see both changes in the account audit log. |
+
+Run the automated tests with `npm --prefix production test`. The suite covers cross-account access, role changes, self-approval denial, and duplicate Gong requests. If you report a problem, include the role, test step, expected result, and what you observed.
 
 ### Try the MCP endpoint locally
 
-While the demo is running, this call lists the saved assignments.
+While the demo is running, compare the Viewer’s tool list with the Gong operator’s. Use `endor-local-demo-jordan` to see the two outreach read tools. Both personas use the same account-level permissions as the console.
 
 ```sh
 curl http://127.0.0.1:8080/mcp \
-  -H 'Authorization: Bearer endor-local-demo-read' \
+  -H 'Authorization: Bearer endor-local-demo-riley' \
+  -H 'Content-Type: application/json' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+```
+
+Use the operator’s token to read saved assignments.
+
+```sh
+curl http://127.0.0.1:8080/mcp \
+  -H 'Authorization: Bearer endor-local-demo-jordan' \
   -H 'Content-Type: application/json' \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"list_outreach_drafts","arguments":{"account":"Copperline CRM Sandbox"}}}'
 ```
@@ -30,15 +47,11 @@ The token belongs to the local fixture. Use the OAuth setup in the deployment gu
 
 ## Share on GitHub
 
-Extract the ZIP and use the folder containing this README as the repository root. Push the extracted files, including `.github/workflows/`, so pull requests can run the pilot tests. Share the repository URL and point reviewers to **Run the demo**. [GitHub guide to adding local code](https://docs.github.com/en/repositories/creating-and-managing-repositories/adding-locally-hosted-code-to-github)
-
-```sh
-npm --prefix production test
-```
+Clone the repository or download its source ZIP from GitHub. Run the instructions above from the folder containing this README. The GitHub Actions workflow runs the same test suite on pushes and pull requests.
 
 ## Deploy to a workplace sandbox
 
-Follow [the deployment guide](production/README.md) for PostgreSQL, Okta, Salesforce synchronization, and remote MCP. Its **Live Gong acceptance test** covers one approved contact and a one-step manual flow. Inspect the exact approved subject and body in Gong before using a live task.
+Follow [the deployment guide](production/README.md) for PostgreSQL, Okta, Salesforce synchronization, account roles, and remote MCP. Its **Live Gong acceptance test** covers one approved contact and a one-step manual flow. Inspect the exact approved subject and body in Gong before using a live task.
 
 ## Explore the original demo
 

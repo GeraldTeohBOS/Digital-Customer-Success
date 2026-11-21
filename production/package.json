@@ -8,7 +8,8 @@
     "start": "node server.mjs",
     "demo": "node demo.mjs",
     "migrate": "node migrate.mjs",
-    "grant:account": "node grant-account.mjs",
+    "grant:account": "node grant-account.mjs grant",
+    "revoke:account": "node grant-account.mjs revoke",
     "sync:salesforce": "node salesforce-sync.mjs",
     "test": "node --test test/*.test.mjs"
   },

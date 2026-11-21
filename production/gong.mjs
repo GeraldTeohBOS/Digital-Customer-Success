@@ -31,8 +31,11 @@ function compileOverrides(text) {
   return (subject,bodyHtml) => fill(template,{subject,bodyHtml});
 }
 
+const isTestTarget = (draft,userId,target) =>
+  draft.account_id === target.accountId && draft.person_id === target.contactId && userId === target.userId;
+
 function requireTestTarget(draft,userId,target) {
-  if (draft.account_id !== target.accountId || draft.person_id !== target.contactId || userId !== target.userId) {
+  if (!isTestTarget(draft,userId,target)) {
     throw new RequestError("Gong queueing is enabled only for the configured pilot operator and test contact.");
   }
 }
@@ -45,6 +48,7 @@ export function simulatedGong({accountId,contactId,userId}) {
   const target = {accountId,contactId,userId,flowId:"demo-manual-email",ownerEmail:"morgan@endor-demo.example"};
   return {
     mode:"simulated",
+    canAssign:(draft,actor) => isTestTarget(draft,actor,target),
     prepare(draft,actor) {
       requireTestTarget(draft,actor,target);
       return {flowId:target.flowId,ownerEmail:target.ownerEmail,draftId:draft.draft_id};
@@ -70,6 +74,7 @@ export function configureGong(env = process.env,request = fetch) {
 
   return {
     mode:"live",
+    canAssign:(draft,actor) => isTestTarget(draft,actor,target),
     prepare(draft,userId) {
       requireTestTarget(draft,userId,target);
       return {flowId:target.flowId,ownerEmail:target.ownerEmail, payload:{

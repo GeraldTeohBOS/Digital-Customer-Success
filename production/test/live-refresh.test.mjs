@@ -45,8 +45,8 @@ test("a Salesforce change reaches the signed-in console and remote MCP through t
   assert.equal((await syncSalesforce(pool,salesforceConfig,mockSalesforce))[0].changed,3);
   await applySnapshot(pool,{accountId:hiddenId,account:{...account,Id:hiddenId,Name:"Restricted account"},
     contacts:[],startedAt:initial});
-  await query("INSERT INTO cs_pilot.account_access VALUES ($1,$2)",["okta-user-1",accountId]);
-  await query("INSERT INTO cs_pilot.account_access VALUES ($1,$2)",["okta-user-2",hiddenId]);
+  await query(`INSERT INTO cs_pilot.account_role_grant (user_id,account_id,role,granted_by)
+    VALUES ($1,$2,'viewer','test'),($3,$4,'viewer','test')`,["okta-user-1",accountId,"okta-user-2",hiddenId]);
 
   const config = webConfig({PUBLIC_URL:"https://cs.example",OIDC_ISSUER:"https://issuer.example/oauth2/pilot",
     OIDC_CLIENT_ID:"web-test",OIDC_CLIENT_SECRET:"test-only"});
@@ -98,7 +98,7 @@ test("a Salesforce change reaches the signed-in console and remote MCP through t
     return body.result.structuredContent;
   };
   const tools = (await invoke("/mcp",undefined,{},token,"tools/list")).body.result.tools;
-  assert.equal(tools.length,7);
+  assert.equal(tools.length,5);
   assert(tools.every(tool => tool.annotations.readOnlyHint));
   assert.equal((await invoke("/mcp","list_accounts",{},await sign("okta-user-1","https://another-api.example"))).status,401);
   assert.equal((await invoke("/mcp","list_accounts",{},await sign("okta-user-1",config.resource,"unrelated"))).status,403);
@@ -132,7 +132,7 @@ test("a Salesforce change reaches the signed-in console and remote MCP through t
 
   const stale = await applySnapshot(pool,{accountId,account,contacts:[],startedAt:initial});
   assert.equal(stale.skipped,"older_sync");
-  await query("DELETE FROM cs_pilot.account_access WHERE user_id=$1 AND account_id=$2",["okta-user-1",accountId]);
+  await query("DELETE FROM cs_pilot.account_role_grant WHERE user_id=$1 AND account_id=$2",["okta-user-1",accountId]);
   assert.equal((await invoke("/api/console","get_account",args)).body.result.isError,true);
-  assert.equal((await invoke("/mcp","get_event",eventArgs)).body.result.isError,true);
+  assert.equal((await invoke("/mcp","get_event",eventArgs)).body.error.code,-32602);
 });

@@ -1,4 +1,5 @@
 import {RequestError} from "../src/service.mjs";
+import {capabilities,permitted} from "./permissions.mjs";
 
 const reference = description => ({type:"string",description,minLength:1,maxLength:160});
 const schema = (properties,required) => ({type:"object",properties,required,additionalProperties:false});
@@ -26,11 +27,12 @@ export const pilotTools = {
 };
 
 export function createPilotService(pool,userId) {
-  const scope = `JOIN cs_pilot.account_access access USING(account_id) WHERE a.active AND access.user_id=$1`;
+  const scope = `WHERE a.active AND ${permitted("a.account_id","$1","account.read")}`;
   const missing = () => new RequestError("This Salesforce account or event is unavailable to your signed-in user.");
   const iso = value => new Date(value).toISOString();
   const freshness = syncedAt => ({source:"Salesforce",synced_at:iso(syncedAt),queried_at:new Date().toISOString()});
-  const portfolio = `SELECT a.account_id,a.account_name,a.source_modified_at,a.synced_at FROM cs_pilot.account a ${scope}`;
+  const columns = "a.account_id,a.account_name,a.source_modified_at,a.synced_at";
+  const portfolio = `SELECT ${columns} FROM cs_pilot.account a ${scope}`;
 
   async function resolve(referenceValue) {
     const {rows} = await pool.query(portfolio + ` AND (a.account_id=$2 OR lower(a.account_name)=lower($2))
@@ -43,7 +45,10 @@ export function createPilotService(pool,userId) {
   }
 
   async function listAccounts() {
-    const {rows:accounts} = await pool.query(portfolio + " ORDER BY a.account_name, a.account_id",[userId]);
+    const {rows} = await pool.query(`SELECT ${columns},ARRAY(SELECT role FROM cs_pilot.account_role_grant
+      WHERE user_id=$1 AND account_id=a.account_id ORDER BY role) AS roles
+      FROM cs_pilot.account a ${scope} ORDER BY a.account_name,a.account_id`,[userId]);
+    const accounts = rows.map(account => ({...account,permissions:capabilities(account.roles)}));
     return {source:"Salesforce",queried_at:new Date().toISOString(),accounts};
   }
 

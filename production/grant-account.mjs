@@ -1,14 +1,14 @@
 import pg from "pg";
 import {required} from "./config.mjs";
-import {checkAccountIds} from "./ingest.mjs";
+import {changeAccountRole} from "./access.mjs";
 
-const [userId,inputId] = process.argv.slice(2);
-if (!userId?.trim() || userId.length > 300 || !inputId) throw new Error("Usage: npm run grant:account -- <Okta user ID> <Salesforce account ID>");
-const [accountId] = checkAccountIds([inputId]);
+const [operation,user_id,account_id,role = "viewer"] = process.argv.slice(2);
+if (!user_id || !account_id) throw new Error("Supply the Okta user ID, Salesforce account ID and optional role.");
 const pool = new pg.Pool({connectionString:process.env.MIGRATION_DATABASE_URL || required(process.env,"DATABASE_URL")});
 try {
-  await pool.query("INSERT INTO cs_pilot.account_access (user_id,account_id) VALUES ($1,$2) ON CONFLICT DO NOTHING",[userId,accountId]);
-  console.log("Account access grant recorded.");
+  const {rows:[session]} = await pool.query("SELECT current_user AS actor");
+  const result = await changeAccountRole(pool,"db:" + session.actor,{operation,user_id,account_id,role},{bootstrap:true});
+  console.log(result.changed ? "Account role change recorded." : "No account role change was needed.");
 } finally {
   await pool.end();
 }

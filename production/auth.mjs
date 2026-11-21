@@ -61,7 +61,7 @@ export function createAuth(pool, config, identity) {
       const {rows:[session]} = await pool.query("SELECT user_id FROM cs_pilot.web_session WHERE token_hash = $1 AND expires_at > now()",[hash(token)]);
       return session?.user_id ?? null;
     },
-    async login() {
+    async login(persona) {
       const token = randomToken();
       const state = oidc.randomState();
       const nonce = oidc.randomNonce();
@@ -69,7 +69,7 @@ export function createAuth(pool, config, identity) {
       await pool.query("DELETE FROM cs_pilot.login_attempt WHERE expires_at <= now()");
       await pool.query(`INSERT INTO cs_pilot.login_attempt (token_hash,state,nonce,verifier,expires_at)
         VALUES ($1,$2,$3,$4,now() + interval '5 minutes')`,[hash(token),state,nonce,verifier]);
-      const url = identity.start({state,nonce,challenge:await oidc.calculatePKCECodeChallenge(verifier)});
+      const url = identity.start({state,nonce,challenge:await oidc.calculatePKCECodeChallenge(verifier),persona});
       return redirect(url,[cookie(LOGIN,token,300)]);
     },
     async callback(request) {

@@ -8,12 +8,13 @@
   <link rel="stylesheet" href="/style.css">
   <script src="/app.js" defer></script>
   <script src="/outreach.js" defer></script>
+  <script src="/access.js" defer></script>
 </head>
 <body>
   <div class="app">
     <header class="topbar">
       <div class="brand"><div><strong>Digital Customer Success</strong><span>CS pilot</span></div></div>
-      <form method="post" action="/logout"><button class="action" type="submit">Sign out</button></form>
+      <button class="action" type="button" id="sign-out">Sign out</button>
     </header>
     <main>
       <header class="intro">
@@ -23,8 +24,23 @@
       <div class="controls pilot-controls">
         <label class="field">Account <select id="account-select" disabled></select></label>
         <button class="action" type="button" id="refresh">Refresh</button>
+        <span class="status-chip" id="account-role" hidden></span>
         <span id="freshness" class="stamp" title="Most recent completed Salesforce sync">Loading Salesforce data…</span>
       </div>
+      <section id="access-panel" class="panel outreach-shell pilot-outreach" aria-label="Account access" hidden>
+        <header class="workflow-heading"><h2>Account access</h2><button type="button" class="action" id="access-refresh">Refresh grants</button></header>
+        <div class="workflow-switch"><label class="field">Manage account <select id="access-account"></select></label></div>
+        <form id="access-form" class="access-form">
+          <label class="compose-field">User identity ID<input id="access-user" maxlength="300" required></label>
+          <label class="field">Role <select id="access-role"></select></label>
+          <div class="workflow-actions">
+            <button type="submit" class="action primary" value="grant">Grant role</button>
+            <button type="submit" class="action" value="revoke">Revoke role</button>
+          </div>
+        </form>
+        <p class="workflow-notice" id="access-notice" role="status"></p>
+        <div id="access-records"></div>
+      </section>
       <p id="notice" class="workflow-error" role="status" hidden></p>
       <div id="account-view" hidden>
         <div class="workspace pilot-graph">

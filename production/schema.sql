@@ -83,3 +83,44 @@ CREATE TABLE IF NOT EXISTS cs_pilot.gong_handoff (
 
 CREATE UNIQUE INDEX IF NOT EXISTS pilot_one_live_gong_task ON cs_pilot.gong_handoff (flow_id, person_id)
 WHERE delivery_mode = 'live' AND status IN ('processing','queued','review_required');
+
+CREATE TABLE IF NOT EXISTS cs_pilot.account_role_grant (
+  account_id text NOT NULL REFERENCES cs_pilot.account,
+  user_id text NOT NULL,
+  role text NOT NULL CHECK (role IN ('viewer','csm','approver','gong_operator','access_admin')),
+  granted_by text NOT NULL,
+  granted_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (account_id,user_id,role)
+);
+CREATE INDEX IF NOT EXISTS pilot_roles_by_user ON cs_pilot.account_role_grant (user_id,role,account_id);
+
+CREATE TABLE IF NOT EXISTS cs_pilot.authorization_audit (
+  audit_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  account_id text NOT NULL REFERENCES cs_pilot.account,
+  actor_id text NOT NULL,
+  action text NOT NULL,
+  target_user_id text,
+  target_role text,
+  draft_id uuid REFERENCES cs_pilot.outreach_draft,
+  revision integer,
+  recorded_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS pilot_audit_by_account ON cs_pilot.authorization_audit (account_id,recorded_at DESC,audit_id DESC);
+ALTER TABLE cs_pilot.outreach_draft ADD COLUMN IF NOT EXISTS approved_by text
+  CHECK (approved_by IS NULL OR (approved_at IS NOT NULL AND approved_by<>created_by));
+
+CREATE TABLE IF NOT EXISTS cs_pilot.migration_history (
+  name text PRIMARY KEY,
+  applied_at timestamptz NOT NULL DEFAULT now()
+);
+
+WITH first_run AS (
+  INSERT INTO cs_pilot.migration_history (name) VALUES ('account-scoped-rbac-v1')
+  ON CONFLICT DO NOTHING RETURNING name
+), migrated AS (
+  INSERT INTO cs_pilot.account_role_grant (account_id,user_id,role,granted_by)
+  SELECT a.account_id,a.user_id,'viewer','system:migration' FROM cs_pilot.account_access a CROSS JOIN first_run
+  ON CONFLICT DO NOTHING RETURNING account_id,user_id,role
+)
+INSERT INTO cs_pilot.authorization_audit (account_id,actor_id,action,target_user_id,target_role)
+SELECT account_id,'system:migration','role.grant',user_id,role FROM migrated;

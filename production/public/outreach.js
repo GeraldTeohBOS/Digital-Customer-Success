@@ -27,14 +27,20 @@ function updateNotice(text = "",error = false) {
 
 function loadEditor() {
   const draft = openDraft;
-  const chooser = '<label class="field">Saved drafts <select id="gong-draft-id">' + optionHtml("","New draft",!draft) +
+  const canCreate = draftScope.permissions.includes("outreach.draft");
+  const chooser = '<label class="field">Saved drafts <select id="gong-draft-id">' +
+    optionHtml("",canCreate ? "New draft" : "Select a draft",!draft) +
     draftList.map(row => optionHtml(row.draft_id,row.recipient_name + " · " + row.subject,row.draft_id === draft?.draft_id)).join("") +
     '</select></label>';
+  if (!draft && !canCreate) {
+    gongEditor.innerHTML = '<div class="workflow-switch">' + chooser + button("Refresh drafts","refresh") + '</div>';
+    return;
+  }
   if (!draft && !draftScope.contacts.length) {
     gongEditor.innerHTML = '<div class="workflow-switch">' + chooser + '</div><p class="empty">This account has no current contacts to add to a draft.</p>';
     return;
   }
-  const readonly = draft && (draft.status !== "draft" || !draft.can_edit);
+  const readonly = draft && !draft.can_edit;
   const contactsOptions = draftScope.contacts.map(node=>optionHtml(node.id,node.label,false)).join("");
   const recipient = draft ? '<p class="workflow-muted">To ' + esc(draft.recipient_name) + '</p>' :
     '<label class="field">Contact <select id="gong-contact">' + contactsOptions + '</select></label>';
@@ -42,11 +48,10 @@ function loadEditor() {
   const demoCopy = !draft && gongMode === "simulated";
   const subject = draft?.subject ?? (demoCopy ? "Copperline pilot follow-up" : "");
   const body = draft?.body ?? (demoCopy ? "Hi Jo,\n\nCan we review which repositories should be in scope for the pilot?\n\nMorgan" : "");
-  const permissions = !draft || draft.can_edit;
-  const actions = draft?.status === "approved" && permissions && gongMode !== "disabled" ?
-    button(gongMode === "simulated" ? "Simulate Gong queue" : "Queue manual Gong task","queue",true) :
-    (!draft ? button("Save draft","create",true) : draft.status === "draft" && permissions ?
-      button("Save edits","edit") + button("Approve saved copy","approve",true) : "");
+  const actions = (!draft ? button("Save draft","create",true) : "") +
+    (draft?.can_edit ? button("Save edits","edit") : "") +
+    (draft?.can_approve ? button("Approve saved copy","approve",true) : "") +
+    (draft?.can_queue ? button(gongMode === "simulated" ? "Simulate Gong queue" : "Queue manual Gong task","queue",true) : "");
   const flow = draft?.delivery_mode ?
     '<dl class="message-address"><dt>Gong flow</dt><dd>' + esc(draft.flow_id) + '</dd><dt>Task owner</dt><dd>' +
     esc(draft.owner_email) + '</dd>' + (draft.flow_instance_id ? '<dt>Flow instance</dt><dd><code>' + esc(draft.flow_instance_id) +
@@ -119,7 +124,16 @@ async function writeDraft(operation) {
 }
 
 document.addEventListener("pilot-account",({detail}) => {
-  if (draftScope?.accountId === detail.accountId) {
+  if (!detail?.permissions.includes("outreach.read")) {
+    viewVersion++;
+    gongPanel.hidden = true;
+    gongEditor.replaceChildren();
+    draftScope = openDraft = null;
+    draftList = [];
+    updateNotice();
+    return;
+  }
+  if (draftScope?.accountId === detail.accountId && draftScope.permissions.join() === detail.permissions.join()) {
     draftScope = detail;
     return;
   }
@@ -132,13 +146,6 @@ gongEditor.addEventListener("change",event=>{
   if (event.target.id === "gong-draft-id" && !busy) {
     updateNotice();
     loadDrafts(event.target.value);
-  }
-});
-gongEditor.addEventListener("input",() => {
-  const approve = gongEditor.querySelector('[data-gong-op="approve"]');
-  if (approve) {
-    approve.disabled = gongEditor.querySelector("#gong-subject").value !== openDraft.subject ||
-      gongEditor.querySelector("#gong-body").value !== openDraft.body;
   }
 });
 gongEditor.addEventListener("click",event=>{

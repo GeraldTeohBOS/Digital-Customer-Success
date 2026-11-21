@@ -1,6 +1,6 @@
 # Digital Customer Success production pilot
 
-A Salesforce account and contact feed backs the browser console and remote MCP tools. Both surfaces use PostgreSQL and the same account grants. The console can save and approve an email draft and queue a manual Gong task for one configured pilot contact. MCP can read the draft and assignment status.
+A Salesforce account and contact feed backs the browser console and remote MCP tools. Both surfaces use PostgreSQL and the same account-scoped roles. The console can save and approve an email draft and queue a manual Gong task for one configured pilot contact. MCP can read the draft and assignment status when the user has outreach access.
 
 ## What this pilot proves
 
@@ -13,7 +13,8 @@ The deployment reads Salesforce account and contact changes and hands approved c
 | `cs_pilot.account` | One scoped Salesforce account with its current name and most recent successful sync |
 | `cs_pilot.contact` | One current Salesforce contact under an account, with name, role and source timestamp |
 | `cs_pilot.engagement_event` | One observed account or contact change with a stable event ID and both source and recording dates |
-| `cs_pilot.account_access` | One grant linking an Okta user ID to an account |
+| `cs_pilot.account_role_grant` | One role linking an Okta user ID to an account |
+| `cs_pilot.authorization_audit` | One recorded grant, revocation, draft change, approval, or Gong handoff event |
 | `cs_pilot.outreach_draft` | One account-scoped message with its saved revision and approval timestamp |
 | `cs_pilot.gong_handoff` | One assignment attempt tied to an approved revision, with status and Gong IDs |
 
@@ -35,21 +36,46 @@ Build the image from the unzipped kit root.
 docker build -f production/Dockerfile -t endor-cs-pilot .
 ```
 
-Run the migration with a database owner or migration role. Run the Salesforce pull with the configured sandbox integration and confirm that the job reports a visible account. Then grant the pilot user access to that account. These commands run inside the image with the applicable environment variables set, or locally from the kit root after `npm --prefix production ci`.
+Run the migration with a database owner or migration role. Run the Salesforce pull with the configured sandbox integration and confirm that the job reports a visible account. Then grant the initial access admin role. These commands run inside the image with the applicable environment variables set, or locally from the kit root after `npm --prefix production ci`.
 
 ```sh
 npm --prefix production run migrate
 npm --prefix production run sync:salesforce
-npm --prefix production run grant:account -- "<okta-user-id>" "<salesforce-account-id>"
+npm --prefix production run grant:account -- "<okta-admin-id>" "<salesforce-account-id>" access_admin
 ```
 
 Deploy the same image as the HTTPS web service. The default command runs `node production/server.mjs` on port 8080. Use `GET /health` for the platform readiness check. Set up a scheduled job with `node production/salesforce-sync.mjs` as its command. A five-minute interval is a starting point for a small account allowlist. The sync job gets a Salesforce access token per run. Set the interval with the CRM owner to fit the team's freshness target and API budget. [Salesforce integration user and client credentials](https://developer.salesforce.com/blogs/2024/02/invoke-rest-apis-with-the-salesforce-integration-user-and-oauth-client-credentials)
 
-Use separate database credentials for deployment, the sync job, and the web service. The web service needs schema usage, read access to account, contact, engagement event and account grant tables, and read and write access to the two session tables, `outreach_draft` and `gong_handoff`. The sync job needs schema usage and read and write access to account, contact and engagement event tables. The migration role creates the schema and provisions grants. Point `MIGRATION_DATABASE_URL` and `INGEST_DATABASE_URL` to the corresponding roles. The web service uses `DATABASE_URL`.
+Use separate database credentials for deployment, the sync job, and the web service. The web service needs schema usage, read access to the account, contact and engagement event tables, read access plus insert and delete on `account_role_grant`, read and insert on `authorization_audit` with usage on its identity sequence, and read and write access to the two session tables, `outreach_draft`, and `gong_handoff`. Keep audit updates and deletes outside the web service role. The sync job needs schema usage and read and write access to account, contact and engagement event tables. The migration role creates the schema and provisions database access. Point `MIGRATION_DATABASE_URL` and `INGEST_DATABASE_URL` to the corresponding roles. The web service uses `DATABASE_URL`.
+
+### Manage account roles
+
+Okta authenticates the user. The application looks up their roles by verified identity ID and account on each request. Scopes are checked again in the database queries that read customer records or change drafts. A user may hold multiple roles on an account. A user without a grant has no customer access.
+
+| Role | Permissions within the assigned account |
+|---|---|
+| `viewer` | Read the account, contacts, timeline, and graph |
+| `csm` | Read account activity and drafts, create drafts, and edit their own unapproved drafts |
+| `approver` | Read account activity and drafts and approve another user’s saved draft |
+| `gong_operator` | Read account activity and drafts and queue independently approved copy, subject to the configured Gong operator and test contact |
+| `access_admin` | Read grants and recent audit events and grant or revoke non-admin roles for other users |
+
+An access admin may manage roles from **Account access** in the console. Ask your identity administrator for the target’s stable Okta ID. Grant a separate role if an access admin also needs access to customer activity or outreach. Use the trusted deployment CLI to assign or remove access admins. The CLI defaults to Viewer when you omit the role.
+
+```sh
+npm --prefix production run grant:account -- "<okta-csm-id>" "<salesforce-account-id>" csm
+npm --prefix production run grant:account -- "<okta-reviewer-id>" "<salesforce-account-id>" approver
+npm --prefix production run grant:account -- "<okta-operator-id>" "<salesforce-account-id>" gong_operator
+npm --prefix production run revoke:account -- "<okta-csm-id>" "<salesforce-account-id>" csm
+```
+
+When upgrading an existing pilot, the migration copies legacy account grants to Viewer once. Assign explicit workflow roles before resuming outreach. Unqueued legacy approvals need a fresh approval by a second user. Existing handoffs remain available in draft history.
+
+MCP exposes read tools only. Its tool list reflects the caller’s current roles and each tool call rechecks the requested account. Revocation takes effect on the next request even if a client still displays a previously discovered tool. Audited workflow events identify the actor, account, draft, and revision. The audit table omits message bodies and credentials.
 
 ### Connect the two surfaces
 
-1. Open the console at `PUBLIC_URL` and sign in with the granted Okta test user.
+1. Open the console at `PUBLIC_URL` and sign in with an Okta test user who has an account read role.
 2. Register `PUBLIC_URL/mcp` once in each approved workspace. Configure its OAuth client and redirect URI in the authorization server according to that client's instructions. The MCP endpoint publishes its protected-resource metadata at `/.well-known/oauth-protected-resource/mcp`.
 3. Enable the connector and authenticate as the same test user. Ask it to list Salesforce accounts and open the test account timeline. Claude's remote connection originates from Anthropic's infrastructure and requires a reachable HTTPS endpoint. Keep the database connection private. [Claude remote connectors](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp) · [ChatGPT custom MCP](https://help.openai.com/en/articles/12584461-connecting-custom-mcp-servers-in-chatgpt)
 
@@ -65,7 +91,7 @@ The shareable demo uses a simulator. For a live test, use a dedicated Gong Engag
 
 1. Set the `GONG_` values from `.env.example` in the deployed service. The pilot pins the Okta operator, Salesforce account, CRM contact, flow, and task owner. Use the workspace API URL and a Gong API key authorized for flow assignment. Set `GONG_MANUAL_FLOW_CONFIRMED=true` after reviewing the flow. [Gong API authentication](https://help.gong.io/apidocs/) · [Flow assignment API](https://help.gong.io/apidocs/assign-prospects-contacts-or-leads-to-an-engage-flow-v2flowsprospectsassign-1)
 2. Confirm the tenant's JSON request fields for a step content override with Gong. Gong documents overriding step subject and HTML body but its public assignment schema does not list those wire fields. Put the confirmed content-only fragment in `GONG_COPY_OVERRIDE_JSON` and use the exact string values `$approved_subject` and `$approved_body_html` for the two copy fields. Target the first manual email step. The adapter supplies the contact ID, flow ID, and owner separately. The fixture used by the automated test is a test contract. [Gong content override capability](https://help.gong.io/docs/gong-engage-api-capabilities#overriding-flow-content-for-added-people)
-3. Set `GONG_MODE=live`, deploy, and sign in as the configured test operator. Select the approved contact, save a draft, approve the saved copy, and click **Queue manual Gong task**.
+3. Set `GONG_MODE=live` and deploy. Sign in as the CSM to save a draft for the approved contact. Have a different user with the Approver role approve the saved copy. Sign in as the configured user with the Gong operator role and click **Queue manual Gong task**.
 4. Open the assignee's manual task in Gong. Check the returned flow instance ID and compare the visible subject and body with the approved draft. The acceptance test ends with the task ready for review. The console also exposes the handoff through `list_outreach_drafts` and `get_outreach_draft`.
 
 An assignment can be reported as rejected or pending review. For a timeout or an ambiguous response, inspect Gong using the test contact and flow before changing the configuration or trying another assignment. The pilot reserves the handoff before calling Gong and preserves uncertainty to prevent a duplicate task. A task assignment, an actual send, and a reply are separate events. This pilot records the assignment.

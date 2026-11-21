@@ -27,6 +27,9 @@ jobs:
           test -f /tmp/endor-extract/Endor_CS_MCP_Kit/README.md
           test -f /tmp/endor-extract/Endor_CS_MCP_Kit/src/server.mjs
           cp -a /tmp/endor-extract/Endor_CS_MCP_Kit/. ./
+          # The workflow file is added separately with the GitHub connection,
+          # because the Actions GITHUB_TOKEN cannot create workflow files.
+          rm -f .github/workflows/pilot-tests.yml
           git add -A
           git diff --cached --quiet && exit 0
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Add Endor Digital Customer Success MCP pilot"

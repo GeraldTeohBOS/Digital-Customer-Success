@@ -7,20 +7,27 @@ import { parseArgs } from "node:util";
 import { openCanonicalDatabase } from "./sqlite.mjs";
 import { createService } from "./service.mjs";
 import { createDispatcher, handleMcp, rpcError } from "./mcp.mjs";
+import { gongDemoDatabasePath, startGongDemoWebhook } from "./gong-demo.mjs";
 
 const {values:flags} = parseArgs({options:{
   http:{type:"boolean",default:false}, port:{type:"string",default:"8765"}, db:{type:"string"},
-  write:{type:"boolean",default:false}, help:{type:"boolean"},
+  write:{type:"boolean",default:false}, "gong-demo":{type:"boolean",default:false}, help:{type:"boolean"},
 }});
 if (flags.help) {
-  console.log("node src/server.mjs [--http] [--port 8765] [--db /path/to/canonical.sqlite3] [--write]");
+  console.log("node src/server.mjs [--gong-demo | [--http] [--port 8765] [--db /path/to/canonical.sqlite3] [--write]]");
   process.exit(0);
+}
+const gongDemo = flags["gong-demo"];
+if (gongDemo && (flags.http || flags.write || flags.db !== undefined)) {
+  throw new Error("Use --gong-demo by itself. It uses stdio and creates its own fictional database copy.");
 }
 const token = process.env.ENDOR_CS_MCP_TOKEN;
 if (flags.http && flags.write && !token) throw new Error("Set ENDOR_CS_MCP_TOKEN to enable HTTP action writes.");
-const db = openCanonicalDatabase(flags.db,{writable:flags.write});
+const writable = gongDemo || flags.write;
+const db = openCanonicalDatabase(gongDemo ? await gongDemoDatabasePath() : flags.db,{writable});
 const ontology = JSON.parse(await readFile(new URL("../docs/ontology.json",import.meta.url),"utf-8"));
-const dispatch = createDispatcher(createService(db,ontology),{actorId:flags.write ? "local-operator" : null});
+const gong = gongDemo ? await startGongDemoWebhook() : undefined;
+const dispatch = createDispatcher(createService(db,ontology,{gong}),{actorId:writable ? "local-operator" : null});
 
 if (flags.http) {
   const port = Number(flags.port);
@@ -58,13 +65,17 @@ if (flags.http) {
   process.on("SIGTERM",() => server.close(() => { db.close(); process.exit(0); }));
 } else {
   const lines = createInterface({input:process.stdin,crlfDelay:Infinity});
-  for await (const line of lines) {
-    if (!line.trim()) continue;
-    let request;
-    try { request = JSON.parse(line); }
-    catch { console.log(JSON.stringify(rpcError(null,-32700,"Invalid JSON."))); continue; }
-    const response = await dispatch(request);
-    if (response) console.log(JSON.stringify(response));
+  try {
+    for await (const line of lines) {
+      if (!line.trim()) continue;
+      let request;
+      try { request = JSON.parse(line); }
+      catch { console.log(JSON.stringify(rpcError(null,-32700,"Invalid JSON."))); continue; }
+      const response = await dispatch(request);
+      if (response) console.log(JSON.stringify(response));
+    }
+  } finally {
+    db.close();
+    await gong?.close();
   }
-  db.close();
 }

@@ -64,4 +64,31 @@ Follow [the deployment guide](production/README.md) for PostgreSQL, Okta, Salesf
 
 The original demo uses local SQLite and simulated provider inputs. Use `node src/server.mjs` for stdio or add `--http` for a loopback HTTP MCP endpoint. It opens read-only by default. Add `--write --db <writable-sqlite-file>` to record changes in a copy, and set `ENDOR_CS_MCP_TOKEN` if using writable HTTP. [Claude Desktop local MCP setup](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop)
 
+### Simulate a Gong handoff in Claude Desktop
+
+The local MCP demo can save and approve a fictional outreach draft and then POST a webhook to a Gong simulator on the same machine. The demo uses a copy at `data/gong-demo.sqlite3` so drafts and receipts survive a Claude restart. Use Node.js 24 or newer. The demo launches with Node alone and uses fictional data.
+
+1. Unzip the complete demo so `src/server.mjs`, `docs/ontology.json`, and `data/canonical.sqlite3` are in the same project folder. On a Mac, enter the folder in Finder and confirm you can see `src`, `docs`, and `data`.
+2. Quit Claude Desktop with **Command + Q**. In Terminal, run `open -a TextEdit "$HOME/Library/Application Support/Claude/claude_desktop_config.json"` to open the config file you already set up.
+3. Under the `endor-digital-cs` entry, set `args` to the full path of the new `src/server.mjs` followed by `"--gong-demo"`. Keep the working `command` for Node. If you just want to verify that path before editing, run the command in Terminal with `--help` and check that the output includes `--gong-demo`.
+
+   ```json
+   "endor-digital-cs": {
+     "command": "/usr/local/bin/node",
+     "args": ["/absolute/path/to/Digital-Customer-Success-main-with-Gong/src/server.mjs", "--gong-demo"]
+   }
+   ```
+
+4. Save and reopen Claude Desktop. In a new chat, use the first prompt to save a draft and review the exact text. If you edited an earlier preview, use `update_outreach_draft` with operation `edit` to save your final subject and body before approval.
+
+   > Use `endor-digital-cs` to save a new direct follow-up draft for Jo Mercer at Copperline Cloud, Platform Engineering. Show me the saved draft ID, current revision, subject, and body. Pause for review.
+
+5. When satisfied with the saved copy, use the second prompt. This approves the current copy and stops after queueing a simulated manual email task.
+
+   > Approve the exact saved draft I just reviewed. Then use `simulate_gong_handoff` for that draft and its approved revision. The fictional Gong Engage Flow ID is `7100320000000000101`. Show me the stored webhook result, Gong assignment request body, request ID, and Flow instance ID. Stop at the manual task. Do not simulate sending the email.
+
+The resulting draft status should be `queued`. `get_outreach_draft` shows the approved version, the HTTP 200 receipt, the fictional CRM lead ID `00Q000000000101EAA`, and the per-recipient Flow instance ID. A retry with the same draft ID and approved revision returns the recorded handoff. If the writable tools are missing, confirm Claude is using the new entry point with `--gong-demo` and restart the app.
+
+The simulator receives `POST /webhooks/gong-engage`. Its receipt shows the documented routing fields for Gong’s `POST /v2/flows/prospects/assign` and the modeled result. The simulator stores the exact approved subject and HTML body in its own manual-step fields. Gong documents content overrides. Confirm the current field mapping with Gong and inspect the approved copy on a sandbox manual email task before a live rollout. Jo’s lead ID is a fixture. A live assignment needs a CRM contact or lead that Gong can resolve and a licensed owner with access to the Flow. [Gong assignment API](https://help.gong.io/apidocs/assign-prospects-contacts-or-leads-to-an-engage-flow-v2flowsprospectsassign-1) · [Gong content overrides](https://help.gong.io/docs/gong-engage-api-capabilities#overriding-flow-content-for-added-people)
+
 Run `python3 data/build_database.py` and `node scripts/export-graph.mjs` to rebuild the original fixture and graph exports. The cloud pilot uses `production/schema.sql`.

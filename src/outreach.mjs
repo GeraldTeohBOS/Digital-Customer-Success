@@ -24,7 +24,7 @@ function simulatedGongAssignment(draft, RequestError) {
   };
 }
 
-export function createOutreachWorkflow({all, first, write, account, snapshot, draftExpansionOutreach, RequestError}) {
+export function createOutreachWorkflow({all, first, write, account, snapshot, draftExpansionOutreach, RequestError, gong}) {
   const readDraft = id => first("SELECT * FROM v_outreach_draft_queue WHERE draft_id = ?", id);
 
   async function listOutreachDrafts({account:reference, buying_group = null, person = null, limit = 20}) {
@@ -55,7 +55,7 @@ export function createOutreachWorkflow({all, first, write, account, snapshot, dr
       ...updates.map(({detail_json,...item}) => ({...item, detail:JSON.parse(detail_json)})),
     ];
     return {draft:{...draft, evidence:JSON.parse(evidence_json), handoff:JSON.parse(handoff_json)},
-      history, events, delivery_mode:"simulated"};
+      history, events, delivery_mode:"simulated", ...(gong ? {simulated_gong_flow_id:gong.flowId} : {})};
   }
 
   async function saveOutreachDraft(args, {actorId} = {}) {
@@ -110,8 +110,9 @@ export function createOutreachWorkflow({all, first, write, account, snapshot, dr
     if (!current) throw new RequestError("Outreach draft was not found.");
     let changed = 0;
     if (current.revision === expected_revision && transition.from.includes(current.status)) {
-      const detail = operation === "queue" ? simulatedGongAssignment(current,RequestError) :
-        operation === "reply" ? {reply_body:body} : {};
+      let detail = {};
+      if (operation === "queue") detail = gong ? await gong.assign(current) : simulatedGongAssignment(current,RequestError);
+      if (operation === "reply") detail = {reply_body:body};
       changed = await write(`INSERT INTO cs_outreach_revision
         (draft_id,revision,operation,status,subject,body,detail_json,actor_id,recorded_at,intent_json)
         SELECT draft_id,revision+1,?,?,?,?,?,?,?,? FROM v_outreach_draft_queue
@@ -128,5 +129,11 @@ export function createOutreachWorkflow({all, first, write, account, snapshot, dr
     return {...await getOutreachDraft({draft_id}), recorded_revision:revision, replayed:!changed};
   }
 
-  return {listOutreachDrafts, getOutreachDraft, ...(write ? {saveOutreachDraft, updateOutreachDraft} : {})};
+  async function simulateGongHandoff({draft_id, expected_revision, flow_id}, context) {
+    if (flow_id !== gong.flowId) throw new RequestError(`Use demo Gong Flow ID ${gong.flowId}.`);
+    return updateOutreachDraft({draft_id, expected_revision, operation:"queue"}, context);
+  }
+
+  return {listOutreachDrafts, getOutreachDraft,
+    ...(write ? {saveOutreachDraft, updateOutreachDraft, ...(gong ? {simulateGongHandoff} : {})} : {})};
 }

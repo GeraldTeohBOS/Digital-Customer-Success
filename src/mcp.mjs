@@ -18,6 +18,7 @@ const actionId = string("Action ID returned by list_customer_actions.");
 const actionStatuses = ["open","in_progress","blocked","completed"];
 const outreachRoute = oneOf("Omit for the evidence-backed recommendation between a warm introduction and direct follow-up.",["warm_intro","direct_follow_up"]);
 const outreachDraftId = string("Draft ID returned by list_outreach_drafts or save_outreach_draft.");
+const outreachRevision = {type:"integer",minimum:0,maximum:2147483646,description:"Current revision from get_outreach_draft."};
 const definitions = [
   ["list_accounts", "List accounts", "List canonical account IDs and names, dated health and churn risk, licensed seats, contributor utilization, and repository adoption.", "listAccounts", {}, []],
   ["get_account", "Get account brief", "Get health, churn risk, buying groups, contract seats, current and proposed Endor product use cases, adoption, scoped outcomes and owned actions.", "getAccount", {account}, ["account"]],
@@ -52,11 +53,15 @@ const definitions = [
     {account,buying_group,person,route:outreachRoute,request_id:string("Optional unique request ID. Reuse it when retrying this save.",100)},
     ["account","buying_group","person"], false],
   ["update_outreach_draft", "Update an outreach workflow", "On explicit instruction, edit or approve copy, queue the approved draft in simulated Gong, record a simulated send, or log a simulated reply. Only simulated send and reply are timeline events.", "updateOutreachDraft",
-    {draft_id:outreachDraftId,expected_revision:{type:"integer",minimum:0,maximum:2147483646,description:"Current revision from get_outreach_draft."},
+    {draft_id:outreachDraftId,expected_revision:outreachRevision,
      operation:oneOf("Edit, approve, queue in simulated Gong, simulate a send, or log a simulated reply.",["edit","approve","queue","send","reply"]),
      subject:string("Single-line subject when editing, approving modified copy, or simulating a send with a final edit.",240),
      body:string("Email body. For a simulated reply, supply only the reply body.",8000)},
     ["draft_id","expected_revision","operation"], false],
+  ["simulate_gong_handoff", "Simulate Gong Engage handoff", "On explicit user approval, post the exact approved Jo Mercer draft to the local Gong webhook. Pass the approved revision and the fictional flow ID as a string. Return the stored assignment request and simulated Gong receipt. Stop at the manual email task.", "simulateGongHandoff",
+    {draft_id:outreachDraftId, expected_revision:{...outreachRevision, minimum:1, description:"Approved revision from get_outreach_draft. Reuse this revision to retry the same handoff."},
+     flow_id:string("Fictional Gong Engage Flow ID. Use the ID given in the demo instructions or by the user.",64)},
+    ["draft_id","expected_revision","flow_id"], false],
   ["get_knowledge_graph", "Get the knowledge graph", "Return typed nodes and links for buying relationships, decision evidence, owned actions or expansion research.", "getKnowledgeGraph",
     {account, mode:oneOf("Select a graph view.", ["relationships","evidence","actions","expansion_research"])}, ["account"]],
   ["describe_dataset", "Browse canonical datasets", "List canonical tables and decision views or return a dataset's key, grain, source, and preview rows.", "describeDataset",

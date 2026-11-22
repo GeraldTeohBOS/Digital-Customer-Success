@@ -7,14 +7,14 @@ const percent = value => value === null || value === undefined ? "Unknown" : val
 const isDate = value => /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(value)) &&
   new Date(value).toISOString().slice(0, 10) === value;
 
-export function createService(db, ontology) {
+export function createService(db, ontology, {gong} = {}) {
   const all = (sql, ...parameters) => db.all(sql, parameters);
   const first = async (sql, ...parameters) => (await all(sql, ...parameters))[0];
   const snapshot = () => first("SELECT snapshot_id, as_of_utc, rule_version, dataset_kind FROM dataset_version");
   const expansionResearch = createExpansionResearch({all, account, snapshot, RequestError});
   const outreachAvailable = db.outreach !== false;
   const outreach = outreachAvailable ? createOutreachWorkflow({
-    all, first, write:db.write, account, snapshot, draftExpansionOutreach:expansionResearch.draftExpansionOutreach, RequestError,
+    all, first, write:db.write, account, snapshot, draftExpansionOutreach:expansionResearch.draftExpansionOutreach, RequestError, gong,
   }) : {};
 
   async function account(reference) {
